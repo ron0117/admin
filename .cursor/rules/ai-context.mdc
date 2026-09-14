@@ -1,0 +1,20 @@
+---
+description: 突破上下文限制——先读文档与规则索引，再按需深入
+globs: []
+alwaysApply: true
+---
+
+# AI 上下文策略（Cursor）
+
+为在有限上下文内高效工作，按下列入口取舍，避免盲目全仓搜索：
+
+1. **不熟项目结构时**：先读根目录 `README.md`，再按任务读 `docs/detail|design|plan|test` 下对应文档。
+2. **需要选技能时**：先读 `.cursor/skills/SKILL_INDEX.md`，再打开对应 `SKILL.md`；场景对照见 `.cursor/AGENTS.md`。
+3. **需求/文档任务**：遵守 `docs-process` 规则（四步流水线，文档阶段不写业务代码）。
+4. **实现前不确定**：遵守 `ask-before-acting`（先反问再改文件）。
+5. **框架约定**：以 **project-rules** 为准（路由两层、PageMenu、JQ*、请求封装、权限 stub）。
+6. **表格/导出/多级 Tab**：普通表 → `JQDataTable`；导出 → `FileExportDialog`；页内多级 → `PageMenu`；先查 `src/components/custom/`。
+7. **权限**：模板态无真实 privilege；勿按 `roleConfig` / `PRIV` 路径设计新功能。
+8. **会话恢复**：先确认当前任务，再读对应 `docs/` 文档。
+
+项目规范由 **project-rules** 自动加载。

@@ -1,0 +1,14 @@
+---
+description: UI、样式与国际化（Vue3 + Element Plus）
+globs: ["**/src/views/**", "**/src/components/**", "**/*.vue"]
+alwaysApply: false
+---
+
+# UI 与国际化
+
+- **样式**：优先 UnoCSS 原子化类；复杂组件才在 SCSS 中用 `@apply`
+- **图标**：使用现有 `<svg-icon />` / Iconify 约定，避免随意新增 SVG
+- **表格**：**默认** `JQDataTable`；合并行/特殊行等复杂能力用 **vxe-table**，优先抽到 `custom/`；导出走 **`FileExportDialog`**
+- **页内多级**：优先 **`PageMenu`** + `config.ts` / `menu.vue`
+- **对话框**：必须设置 `:close-on-click-modal="false"`
+- **文案**：界面默认中文；多语言走 i18n。**默认语言为 `zh-cn`**（简体），`fallbackLocale` 同为 `zh-cn`

@@ -1,0 +1,12 @@
+---
+description: Git 提交与协作流程
+globs: []
+alwaysApply: false
+---
+
+# Git 工作流
+
+- **提交格式**：`<type>: <scope 或简述>`，类型为 feat / fix / refactor / docs / test / chore / perf / ci
+- **示例**：`feat: demo → 补充 PageMenu 示例页`
+- **禁止**：自动提交变更，由用户确认后再提交
+- **不要**：擅自 `git push`、改 git config、跳过 hooks

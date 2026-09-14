@@ -1,0 +1,69 @@
+---
+description: Admin 框架模板项目规范（路由、组件、请求、UI 约定）
+globs: []
+alwaysApply: true
+---
+
+# Admin 框架模板规范
+
+本仓是从 o2o-backoffice 清洗出的中后台框架模板（Soybean Admin ELP / Vue3 + Vite + Element Plus）。交互时必须遵守下列约定。
+
+## 项目身份
+
+- **类型**：可二次开发的中后台前端框架模板
+- **保留能力**：elegant-router、布局壳、请求封装、JQ* / PageMenu 等框架组件
+- **已移除**：O2O 业务页、真实 privilege 体系（运行时 stub 全通）
+- **默认语言**：简体中文 `zh-cn`
+
+## 架构与结构
+
+- **文件放置**：
+  - `views/` → 页面（按功能分组）
+  - `service/api/` → API 定义（禁止业务里直接 axios）
+  - `store/modules/` → Pinia 按关注点拆分
+  - `components/custom/` → 框架封装组件（优先复用）
+- **路由与目录层级（elegant-router）**：
+  - 注册路由相对 `views/` **最多两层**；更深信息架构在页内用 **`PageMenu`**
+  - 页内 Tab：子目录成对放 **`config.ts`**（`sort`、`name`）与 **`menu.vue`**；仅 Tab 内容**禁止**用 `index.vue`（避免误生路由）
+  - 二级路由页用 **`index.vue`**，内容通常为 `<PageMenu />`
+- **禁止**：未经批准改 `src/service/request/shared.ts`；随意新建顶级目录
+
+## 代码模式
+
+- `<script setup>` / TS 中**优先箭头函数**
+- API 仅从 `@/service/api` 引入
+- 状态经 store actions 修改，禁止直接改 state
+
+## UI 与样式
+
+- **封装优先**：先查 `src/components/custom/`（`PageMenu`、`JQDataTable`、`JQSearch`、`FileExportDialog` 等），禁止已知有封装时再手写等价交互
+- **汇出**：统一 **`FileExportDialog`**，业务页勿自建导出链
+- **表格**：普通列表用 **`JQDataTable`**；合并行/特殊行等再用 VxeTable（优先二次封装）
+- **UnoCSS** 原子类优先；对话框须 `:close-on-click-modal="false"`
+- **图标**：`<svg-icon />` / 现有 icon 集合，避免随意新增 SVG
+
+## 权限（模板态）
+
+- `judgePrivilege` / `hasMenuPrivilege` / `v-auth` 为 **stub 全通**
+- **勿**把 stub 当安全边界；新 RBAC 须另开需求，禁止半套 privilege
+
+## 工作流
+
+- 改前先 Read 受影响文件；大改动先对齐 `docs/` 设计/计划
+- **禁止自动 git commit**，由用户确认后再提交
+- 冒烟与验收对照 `docs/test/自测方案-框架.md`
+
+## 禁止
+
+- ❌ 生产代码 `console.log`
+- ❌ 恢复完整 privilege 树却不改齐 guard/菜单/PageMenu
+- ❌ 把 O2O 业务域或 `_apis` swagger 巨文件搬回模板
+
+## 文档入口
+
+| 场景 | 文档 |
+|------|------|
+| 需求流水线 | `docs/requirements` → detail → design → plan → test |
+| 技能索引 | `.cursor/skills/SKILL_INDEX.md`、`.cursor/AGENTS.md` |
+| 框架约定 | 本规则 + `README.md` |
+| 不确定是否动手 | 遵守 `ask-before-acting` |

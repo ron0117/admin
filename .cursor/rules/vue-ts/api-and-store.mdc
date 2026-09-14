@@ -1,0 +1,13 @@
+---
+description: API 与 Store 使用规范（Vue3 + TS）
+globs: ["**/src/service/**", "**/src/store/**", "**/src/views/**"]
+alwaysApply: false
+---
+
+# API 与 Store（Vue/TS）
+
+- **API**：仅通过 `@/service/api` 调用，禁止在业务/页面代码中直接使用 axios
+- **Store**：状态修改必须通过 store 的 actions / 约定 API，禁止直接改 state
+- **禁止修改**：`src/service/request/shared.ts`（未经批准）
+- **登录**：默认 `VITE_AUTH_MOCK=Y`；接真实后端时改 env，并保持 `auth.ts` 请求形状可替换
+- **权限相关 store 字段**：可为兼容保留，但判断逻辑以 stub 全通为准，勿恢复半套过滤

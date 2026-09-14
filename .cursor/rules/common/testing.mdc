@@ -1,0 +1,12 @@
+---
+description: 测试与验证要求
+globs: []
+alwaysApply: false
+---
+
+# 测试要求
+
+- 框架改动后：按 `docs/test/自测方案-框架.md` 冒烟（登录 → 首页 → demo → 菜单/多标签）
+- 多文件变更（>2 个文件）前：优先对齐计划/设计或使用 Plan 模式
+- 修改前：用 Read 工具读取将受影响的文件后再改
+- `pnpm typecheck` 若有历史 Element Plus 类型债，以 README「已知问题」为准；**不阻塞** `pnpm dev` 冒烟验收

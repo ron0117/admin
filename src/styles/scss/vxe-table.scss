@@ -1,0 +1,24 @@
+/**
+ * Vxe Table 全局主题：将 Vxe UI 色彩变量对齐 Element Plus / 项目主题，
+ * 随明暗模式与主题色切换。须在 vxe-table 默认样式之后加载。
+ */
+html[data-vxe-ui-theme='light'],
+html[data-vxe-ui-theme='dark'] {
+  --vxe-ui-font-primary-color: var(--el-color-primary);
+  --vxe-ui-layout-background-color: var(--el-bg-color);
+  --vxe-ui-font-color: var(--el-text-color-regular);
+  --vxe-ui-table-header-background-color: var(--el-fill-color-lighter);
+  --vxe-ui-table-body-background-color: var(--el-bg-color);
+  --vxe-ui-table-footer-background-color: var(--el-bg-color);
+  --vxe-ui-table-border-color: var(--el-border-color);
+  --vxe-ui-table-header-font-color: var(--el-text-color-primary);
+  --vxe-ui-table-footer-font-color: var(--el-text-color-primary);
+  --vxe-ui-table-row-striped-background-color: var(--el-fill-color-lighter);
+  --vxe-ui-table-row-hover-background-color: var(--el-fill-color-light);
+  --vxe-ui-table-row-hover-striped-background-color: var(--el-fill-color);
+  --vxe-ui-table-fixed-scrolling-box-shadow-color: var(--el-border-color-lighter);
+}
+
+html[data-vxe-ui-theme='dark'] {
+  color-scheme: dark;
+}
