@@ -182,7 +182,15 @@ const routeMap: RouteMap = {
   "500": "/500",
   "demo": "/demo",
   "home": "/home",
-  "login": "/login/:module(pwd-login)?"
+  "login": "/login/:module(pwd-login)?",
+  "manage": "/manage",
+  "manage_admin": "/manage/admin",
+  "user": "/user",
+  "user_list": "/user/list",
+  "user_role": "/user/role",
+  "points": "/points",
+  "points_settings": "/points/settings",
+  "points_records": "/points/records"
 };
 
 /**

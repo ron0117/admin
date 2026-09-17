@@ -19,9 +19,42 @@ pnpm dev
 | 登录 | 默认 **mock**（`VITE_AUTH_MOCK=Y`），任意账号密码可进入 |
 | 权限 | **已关闭**：路由/菜单/`v-auth`/`PageMenu` 一律放行 |
 | 业务 | O2O 业务页与 privilege 配置树已删除 |
-| 示例 | `home` + `demo`（PageMenu + JQSearch / JQDataTable） |
+| 示例 | `home`；`demo`（PageMenu + JQSearch / JQDataTable）已隐藏侧栏，仍可访问 `/demo` |
 
-接真实后端时：在 `.env` 将 `VITE_AUTH_MOCK=N`，并配置 `.env.test` / `.env.prod` 的 `VITE_SERVICE_BASE_URL`。
+接真实后端时：在 `.env` 将 `VITE_AUTH_MOCK=N`，并配置 `VITE_NEST_BASE_URL`（开发默认 `http://localhost:3000`，`VITE_HTTP_PROXY=Y` 时走 `/proxy-nest`）。
+
+## 管理员 / 用户管理（接 Nest）
+
+后台登录账号与 Electron 用户**分表**：
+
+| 页面 | 路径 | API | 说明 |
+|------|------|-----|------|
+| 管理员列表 | `/manage/admin` | `/admin/admins*` | 侧栏「账号管理」；可登录后台的 `AdminUser` |
+| 用户列表 | `/user/list` | `/admin/users*` | 侧栏「用户管理」；Electron 桌面端 `User`，可多选业务角色 |
+| 角色管理 | `/user/role` | `/admin/roles*`、`/admin/menus/tree` | 侧栏「用户管理」；Electron 生图菜单角色；勾父=全开 |
+
+联调步骤：
+
+1. 在 `nestjs/apps/nest-api`：`npx prisma migrate deploy` 后 **`npx prisma db seed`**（写入 `AdminUser` + 生图菜单 9 节点；旧 `User.role=admin` 不能再登后台）
+2. Admin `.env`：`VITE_AUTH_MOCK=N`、`VITE_NEST_BASE_URL=http://localhost:3000`
+3. 用 `ADMIN_SEED_EMAIL` / `ADMIN_SEED_PASSWORD`（默认 `admin@example.com` / `admin12345`）登录
+4. 登录走 `POST /admin/auth/*`（`JWT_ADMIN_SECRET`）；桌面端 `/auth/*` 的 token 不能调管理接口
+5. 两表邮箱可相同，密码独立；API 走 `src/service/request/nest.ts`，不改全局 `{ code, data }` 封装
+6. 角色改权限后，桌面端须刷新或重登（旧 Electron 包不读 `menus` 仍会全开生图）
+
+## 积分
+
+侧栏「积分」：
+
+| 页面 | 路径 | API | 说明 |
+|------|------|-----|------|
+| 功能设置 | `/points/settings` | `GET/PATCH /admin/point-features` | 6 个创作功能；「修改」弹窗改规格单价与备注 |
+| 积分流水 | `/points/records` | `GET /admin/point-ledgers` | 筛选分页；可复制 `requestId` |
+| 用户列表 | `/user/list` | `POST /admin/users/:id/points` | 增加积分列与「调整积分」 |
+
+联调：Nest `npx prisma migrate deploy && npx prisma db seed` 后，用后台账号登录。桌面端须升级才会预扣积分；未升级的旧包不调 hold。
+
+相关文档：`docs/**` 下「积分模块」系列。
 
 ## 如何加页
 
@@ -75,3 +108,13 @@ src/views/your-page/.../menu.vue       # Tab 内容
 | 技术设计 | `docs/design/技术设计-框架.md` |
 | 开发计划 | `docs/plan/开发计划-框架.md` |
 | 自测方案 | `docs/test/自测方案-框架.md` |
+| 管理员管理需求 | `docs/requirements/需求-管理员管理.md` |
+| 管理员管理梳理 | `docs/detail/需求-管理员管理-梳理版.md` |
+| 管理员管理设计 | `docs/design/技术设计-管理员管理.md` |
+| 管理员管理计划 | `docs/plan/开发计划-管理员管理.md` |
+| 管理员管理自测 | `docs/test/自测方案-管理员管理.md` |
+| 用户管理需求 | `docs/requirements/需求-用户管理.md` |
+| 用户管理梳理 | `docs/detail/需求-用户管理-梳理版.md` |
+| 用户管理设计 | `docs/design/技术设计-用户管理.md` |
+| 用户管理计划 | `docs/plan/开发计划-用户管理.md` |
+| 用户管理自测 | `docs/test/自测方案-用户管理.md` |

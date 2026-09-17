@@ -651,6 +651,14 @@ declare namespace App {
             roleCode: string;
             roleStatus: string;
             roleDesc: string;
+            keyword: string;
+            createdAt: string;
+            statusActive: string;
+            statusDisabled: string;
+            confirmDisable: string;
+            confirmEnable: string;
+            configureMenus: string;
+            menusHint: string;
             form: {
               roleName: string;
               roleCode: string;
@@ -682,10 +690,42 @@ declare namespace App {
             };
             addUser: string;
             editUser: string;
+            resetPassword: string;
+            createdAt: string;
+            keyword: string;
+            activate: string;
+            confirmDisable: string;
+            confirmEnable: string;
+            password: string;
+            roleUser: string;
+            roleAdmin: string;
+            statusPending: string;
+            statusActive: string;
+            statusDisabled: string;
             gender: {
               male: string;
               female: string;
             };
+          };
+          admin: {
+            title: string;
+            userName: string;
+            userEmail: string;
+            userStatus: string;
+            form: {
+              userName: string;
+              userEmail: string;
+            };
+            addUser: string;
+            editUser: string;
+            resetPassword: string;
+            createdAt: string;
+            keyword: string;
+            confirmDisable: string;
+            confirmEnable: string;
+            password: string;
+            statusActive: string;
+            statusDisabled: string;
           };
           menu: {
             home: string;
@@ -754,6 +794,71 @@ declare namespace App {
               iconify: string;
               local: string;
             };
+          };
+        };
+        points: {
+          settings: {
+            title: string;
+            feature: string;
+            featureName: string;
+            menuCode: string;
+            points: string;
+            remark: string;
+            updatedAt: string;
+            editTitle: string;
+            unitPoints: string;
+            unitHigh: string;
+            unitMedium: string;
+            unitGood: string;
+            unitInvalid: string;
+            remarkMax: string;
+            priceHint: string;
+            liveSummary: string;
+            defaultSummary: string;
+          };
+          records: {
+            title: string;
+            user: string;
+            userPlaceholder: string;
+            type: string;
+            feature: string;
+            featureSpec: string;
+            status: string;
+            time: string;
+            quantity: string;
+            delta: string;
+            balanceAfter: string;
+            requestId: string;
+            remark: string;
+            typeConsume: string;
+            typeRefund: string;
+            typeIncrease: string;
+            typeDecrease: string;
+            statusPending: string;
+            statusCompleted: string;
+            statusRefunded: string;
+            copyId: string;
+            copySuccess: string;
+            copyFailed: string;
+          };
+          menu: {
+            inspire: string;
+            fission: string;
+            sceneRenew: string;
+            free: string;
+            live: string;
+            copywrite: string;
+          };
+          user: {
+            points: string;
+            adjust: string;
+            direction: string;
+            increase: string;
+            decrease: string;
+            amount: string;
+            remark: string;
+            amountInvalid: string;
+            remarkRequired: string;
           };
         };
         game: {

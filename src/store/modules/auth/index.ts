@@ -100,7 +100,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
     startLoading();
 
     const { data: loginToken, error } = await fetchLogin(loginType, subject, password);
-    if (!error) {
+    if (!error && loginToken) {
       localStg.set('token', loginToken.token);
       token.value = loginToken.token;
 

@@ -47,7 +47,8 @@ export const generatedRoutes: GeneratedRoute[] = [
       title: 'demo',
       i18nKey: 'route.demo',
       icon: 'mdi:flask-outline',
-      order: 2
+      order: 99,
+      hideInMenu: true
     }
   },
   {
@@ -72,5 +73,99 @@ export const generatedRoutes: GeneratedRoute[] = [
       constant: true,
       hideInMenu: true
     }
+  },
+  {
+    name: 'manage',
+    path: '/manage',
+    component: 'layout.base',
+    meta: {
+      title: 'manage',
+      i18nKey: 'route.manage',
+      icon: 'mdi:shield-account-outline',
+      order: 2
+    },
+    children: [
+      {
+        name: 'manage_admin',
+        path: '/manage/admin',
+        component: 'view.manage_admin',
+        meta: {
+          title: 'manage_admin',
+          i18nKey: 'route.manage_admin',
+          icon: 'mdi:account-tie-outline',
+          order: 1
+        }
+      }
+    ]
+  },
+  {
+    name: 'user',
+    path: '/user',
+    component: 'layout.base',
+    meta: {
+      title: 'user',
+      i18nKey: 'route.user',
+      icon: 'mdi:account-group-outline',
+      order: 3
+    },
+    children: [
+      {
+        name: 'user_list',
+        path: '/user/list',
+        component: 'view.user_list',
+        meta: {
+          title: 'user_list',
+          i18nKey: 'route.user_list',
+          icon: 'mdi:account-outline',
+          order: 1
+        }
+      },
+      {
+        name: 'user_role',
+        path: '/user/role',
+        component: 'view.user_role',
+        meta: {
+          title: 'user_role',
+          i18nKey: 'route.user_role',
+          icon: 'mdi:account-key-outline',
+          order: 2
+        }
+      }
+    ]
+  },
+  {
+    name: 'points',
+    path: '/points',
+    component: 'layout.base',
+    meta: {
+      title: 'points',
+      i18nKey: 'route.points',
+      icon: 'mdi:circle-multiple-outline',
+      order: 4
+    },
+    children: [
+      {
+        name: 'points_settings',
+        path: '/points/settings',
+        component: 'view.points_settings',
+        meta: {
+          title: 'points_settings',
+          i18nKey: 'route.points_settings',
+          icon: 'mdi:tune-variant',
+          order: 1
+        }
+      },
+      {
+        name: 'points_records',
+        path: '/points/records',
+        component: 'view.points_records',
+        meta: {
+          title: 'points_records',
+          i18nKey: 'route.points_records',
+          icon: 'mdi:text-box-outline',
+          order: 2
+        }
+      }
+    ]
   }
 ];

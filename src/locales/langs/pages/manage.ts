@@ -11,14 +11,22 @@ const manage_cn: App.I18n.Schema['page']['manage'] = {
     roleName: '角色名称',
     roleCode: '角色编码',
     roleStatus: '角色状态',
-    roleDesc: '角色描述',
+    roleDesc: '备注',
+    keyword: '关键字',
+    createdAt: '创建时间',
+    statusActive: '启用',
+    statusDisabled: '禁用',
+    confirmDisable: '确认禁用该角色？绑定关系会保留，但桌面端下次刷新后不再计入权限。',
+    confirmEnable: '确认启用该角色？',
+    configureMenus: '配置权限',
+    menusHint: '勾选父级等于开放全部子菜单（含日后新增）。改完后桌面端需刷新或重新登录才生效。',
     menuAuth: '菜单权限',
     buttonAuth: '按钮权限',
     form: {
       roleName: '请输入角色名称',
       roleCode: '请输入角色编码',
       roleStatus: '请选择角色状态',
-      roleDesc: '请输入角色描述'
+      roleDesc: '请输入备注'
     },
     addRole: '新增角色',
     editRole: '编辑角色'
@@ -43,10 +51,42 @@ const manage_cn: App.I18n.Schema['page']['manage'] = {
     },
     addUser: '新增用户',
     editUser: '编辑用户',
+    resetPassword: '重置密码',
+    createdAt: '创建时间',
+    keyword: '关键字',
+    activate: '激活',
+    confirmDisable: '确认禁用该用户？禁用后将无法登录桌面端。',
+    confirmEnable: '确认启用该用户？',
+    password: '密码',
+    roleUser: '普通用户',
+    roleAdmin: '管理员',
+    statusPending: '待验证',
+    statusActive: '正常',
+    statusDisabled: '禁用',
     gender: {
       male: '男',
       female: '女'
     }
+  },
+  admin: {
+    title: '管理员列表',
+    userName: '用户名',
+    userEmail: '邮箱',
+    userStatus: '状态',
+    form: {
+      userName: '请输入用户名',
+      userEmail: '请输入邮箱'
+    },
+    addUser: '新增管理员',
+    editUser: '编辑管理员',
+    resetPassword: '重置密码',
+    createdAt: '创建时间',
+    keyword: '关键字',
+    confirmDisable: '确认禁用该管理员？禁用后将无法登录后台。',
+    confirmEnable: '确认启用该管理员？',
+    password: '密码',
+    statusActive: '正常',
+    statusDisabled: '禁用'
   },
   menu: {
     home: '首页',
@@ -130,14 +170,22 @@ const manage_tw: App.I18n.Schema['page']['manage'] = {
     roleName: '角色名稱',
     roleCode: '角色編碼',
     roleStatus: '角色狀態',
-    roleDesc: '角色描述',
+    roleDesc: '備註',
+    keyword: '關鍵字',
+    createdAt: '建立時間',
+    statusActive: '啟用',
+    statusDisabled: '停用',
+    confirmDisable: '確認停用該角色？綁定關係會保留，但桌面端下次重新整理後不再計入權限。',
+    confirmEnable: '確認啟用該角色？',
+    configureMenus: '配置權限',
+    menusHint: '勾選父級等於開放全部子選單（含日後新增）。改完後桌面端需重新整理或重新登入才生效。',
     menuAuth: '菜單權限',
     buttonAuth: '按鈕權限',
     form: {
       roleName: '請輸入角色名稱',
       roleCode: '請輸入角色編碼',
       roleStatus: '請選擇角色狀態',
-      roleDesc: '請輸入角色描述'
+      roleDesc: '請輸入備註'
     },
     addRole: '新增角色',
     editRole: '編輯角色'
@@ -162,10 +210,42 @@ const manage_tw: App.I18n.Schema['page']['manage'] = {
     },
     addUser: '新增用戶',
     editUser: '編輯用戶',
+    resetPassword: '重設密碼',
+    createdAt: '建立時間',
+    keyword: '關鍵字',
+    activate: '啟用帳號',
+    confirmDisable: '確認停用該用戶？停用後將無法登入桌面端。',
+    confirmEnable: '確認啟用該用戶？',
+    password: '密碼',
+    roleUser: '一般用戶',
+    roleAdmin: '管理員',
+    statusPending: '待驗證',
+    statusActive: '正常',
+    statusDisabled: '停用',
     gender: {
       male: '男',
       female: '女'
     }
+  },
+  admin: {
+    title: '管理員列表',
+    userName: '使用者名稱',
+    userEmail: '信箱',
+    userStatus: '狀態',
+    form: {
+      userName: '請輸入使用者名稱',
+      userEmail: '請輸入信箱'
+    },
+    addUser: '新增管理員',
+    editUser: '編輯管理員',
+    resetPassword: '重設密碼',
+    createdAt: '建立時間',
+    keyword: '關鍵字',
+    confirmDisable: '確認停用該管理員？停用後將無法登入後台。',
+    confirmEnable: '確認啟用該管理員？',
+    password: '密碼',
+    statusActive: '正常',
+    statusDisabled: '停用'
   },
   menu: {
     home: '首頁',
@@ -249,14 +329,23 @@ const manage_us: App.I18n.Schema['page']['manage'] = {
     roleName: 'Role Name',
     roleCode: 'Role Code',
     roleStatus: 'Role Status',
-    roleDesc: 'Role Description',
+    roleDesc: 'Remark',
+    keyword: 'Keyword',
+    createdAt: 'Created At',
+    statusActive: 'Active',
+    statusDisabled: 'Disabled',
+    confirmDisable: 'Disable this role? Bindings are kept, but the desktop app will ignore it after the next refresh.',
+    confirmEnable: 'Enable this role?',
+    configureMenus: 'Configure menus',
+    menusHint:
+      'Checking a parent grants all children (including ones added later). Desktop clients need a refresh or re-login.',
     menuAuth: 'Menu Auth',
     buttonAuth: 'Button Auth',
     form: {
       roleName: 'Please enter role name',
       roleCode: 'Please enter role code',
       roleStatus: 'Please select role status',
-      roleDesc: 'Please enter role description'
+      roleDesc: 'Please enter remark'
     },
     addRole: 'Add Role',
     editRole: 'Edit Role'
@@ -281,10 +370,42 @@ const manage_us: App.I18n.Schema['page']['manage'] = {
     },
     addUser: 'Add User',
     editUser: 'Edit User',
+    resetPassword: 'Reset Password',
+    createdAt: 'Created At',
+    keyword: 'Keyword',
+    activate: 'Activate',
+    confirmDisable: 'Disable this user? They will not be able to sign in to the desktop app.',
+    confirmEnable: 'Enable this user?',
+    password: 'Password',
+    roleUser: 'User',
+    roleAdmin: 'Admin',
+    statusPending: 'Pending',
+    statusActive: 'Active',
+    statusDisabled: 'Disabled',
     gender: {
       male: 'Male',
       female: 'Female'
     }
+  },
+  admin: {
+    title: 'Admin List',
+    userName: 'User Name',
+    userEmail: 'Email',
+    userStatus: 'Status',
+    form: {
+      userName: 'Please enter user name',
+      userEmail: 'Please enter email'
+    },
+    addUser: 'Add Admin',
+    editUser: 'Edit Admin',
+    resetPassword: 'Reset Password',
+    createdAt: 'Created At',
+    keyword: 'Keyword',
+    confirmDisable: 'Disable this admin? They will not be able to sign in to the backoffice.',
+    confirmEnable: 'Enable this admin?',
+    password: 'Password',
+    statusActive: 'Active',
+    statusDisabled: 'Disabled'
   },
   menu: {
     home: 'Home',

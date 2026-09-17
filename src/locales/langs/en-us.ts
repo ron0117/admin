@@ -4,6 +4,7 @@ import { bo_us } from './pages/bo';
 import { system_us } from './pages/system';
 import { home_us } from './pages/home';
 import { manage_us } from './pages/manage';
+import { points_us } from './pages/points';
 import { game_us } from './pages/game';
 import { member_us } from './pages/member';
 import { cash_us } from './pages/cash';
@@ -298,6 +299,14 @@ const local: App.I18n.Schema = {
     500: 'Server Error',
     home: 'Home',
     demo: 'Component Demo',
+    manage: 'Account Management',
+    manage_admin: 'Admin List',
+    user: 'User Management',
+    user_list: 'User List',
+    user_role: 'Role Management',
+    points: 'Points',
+    points_settings: 'Feature Settings',
+    points_records: 'Point Ledger',
     document: 'Document',
     document_project: 'Project Document',
     'document_project-link': 'Project Document(External Link)',
@@ -318,6 +327,7 @@ const local: App.I18n.Schema = {
     bo: bo_us,
     home: home_us,
     manage: manage_us,
+    points: points_us,
     game: game_us,
     member: member_us,
     system: system_us,

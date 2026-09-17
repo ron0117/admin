@@ -37,6 +37,14 @@ declare module "@elegant-router/types" {
     "demo": "/demo";
     "home": "/home";
     "login": "/login/:module(pwd-login)?";
+    "manage": "/manage";
+    "manage_admin": "/manage/admin";
+    "user": "/user";
+    "user_list": "/user/list";
+    "user_role": "/user/role";
+    "points": "/points";
+    "points_settings": "/points/settings";
+    "points_records": "/points/records";
   };
 
   /**
@@ -88,6 +96,9 @@ declare module "@elegant-router/types" {
     | "demo"
     | "home"
     | "login"
+    | "manage"
+    | "user"
+    | "points"
   >;
 
   /**
@@ -112,6 +123,11 @@ declare module "@elegant-router/types" {
     | "login"
     | "demo"
     | "home"
+    | "manage_admin"
+    | "user_list"
+    | "user_role"
+    | "points_settings"
+    | "points_records"
   >;
 
   /**

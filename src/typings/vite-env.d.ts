@@ -72,6 +72,12 @@ declare namespace Env {
      * Only valid in the development environment
      */
     readonly VITE_HTTP_PROXY?: CommonType.YesOrNo;
+    /** Nest API base url (user management / real login) */
+    readonly VITE_NEST_BASE_URL?: string;
+    /** Y: mock login; N: Nest email/password login */
+    readonly VITE_AUTH_MOCK?: CommonType.YesOrNo;
+    /** Super admin display name used by static route bypass */
+    readonly VITE_LOGIN_SUPER_NAME?: string;
     /**
      * The auth route mode
      *

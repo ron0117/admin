@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { VNode } from 'vue';
+import { fetchLogout } from '@/service/api';
 import { useAuthStore } from '@/store/modules/auth';
 import { useRouterPush } from '@/hooks/common/router';
 import { useSvgIcon } from '@/hooks/common/icon';
@@ -39,7 +40,8 @@ function logout() {
       cancelButtonText: $t('common.cancel'),
       type: 'warning'
     })
-    .then(() => {
+    .then(async () => {
+      await fetchLogout();
       authStore.resetStore();
     });
 }

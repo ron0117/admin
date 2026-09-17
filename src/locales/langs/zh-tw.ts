@@ -4,6 +4,7 @@ import { bo_tw } from './pages/bo';
 import { system_tw } from './pages/system';
 import { home_tw } from './pages/home';
 import { manage_tw } from './pages/manage';
+import { points_tw } from './pages/points';
 import { game_tw } from './pages/game';
 import { member_tw } from './pages/member';
 import { cash_tw } from './pages/cash';
@@ -298,6 +299,14 @@ const local: App.I18n.Schema = {
     500: '伺服器錯誤',
     home: '首頁',
     demo: '組件示例',
+    manage: '帳號管理',
+    manage_admin: '管理員列表',
+    user: '用戶管理',
+    user_list: '用戶列表',
+    user_role: '角色管理',
+    points: '積分',
+    points_settings: '功能設定',
+    points_records: '積分流水',
     document: '文件',
     document_project: '項目文件',
     'document_project-link': '項目文件(外鏈)',
@@ -318,6 +327,7 @@ const local: App.I18n.Schema = {
     bo: bo_tw,
     home: home_tw,
     manage: manage_tw,
+    points: points_tw,
     game: game_tw,
     member: member_tw,
     system: system_tw,

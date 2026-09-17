@@ -4,6 +4,7 @@ import { bo_cn } from './pages/bo';
 import { system_cn } from './pages/system';
 import { home_cn } from './pages/home';
 import { manage_cn } from './pages/manage';
+import { points_cn } from './pages/points';
 import { game_cn } from './pages/game';
 import { member_cn } from './pages/member';
 import { cash_cn } from './pages/cash';
@@ -298,6 +299,14 @@ const local: App.I18n.Schema = {
     500: '服务器错误',
     home: '首页',
     demo: '组件示例',
+    manage: '账号管理',
+    manage_admin: '管理员列表',
+    user: '用户管理',
+    user_list: '用户列表',
+    user_role: '角色管理',
+    points: '积分',
+    points_settings: '功能设置',
+    points_records: '积分流水',
     document: '文档',
     document_project: '项目文档',
     'document_project-link': '项目文档(外链)',
@@ -318,6 +327,7 @@ const local: App.I18n.Schema = {
     bo: bo_cn,
     home: home_cn,
     manage: manage_cn,
+    points: points_cn,
     game: game_cn,
     member: member_cn,
     system: system_cn,

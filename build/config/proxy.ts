@@ -24,6 +24,18 @@ export function createViteProxy(env: Env.ImportMeta, enable: boolean) {
     Object.assign(proxy, createProxyItem(item, isEnableProxyLog));
   });
 
+  const nestTarget = env.VITE_NEST_BASE_URL || 'http://localhost:3000';
+  Object.assign(
+    proxy,
+    createProxyItem(
+      {
+        baseURL: nestTarget,
+        proxyPattern: '/proxy-nest'
+      } as App.Service.ServiceConfigItem,
+      isEnableProxyLog
+    )
+  );
+
   return proxy;
 }
 
