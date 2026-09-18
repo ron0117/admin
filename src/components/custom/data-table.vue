@@ -323,8 +323,11 @@ nextTick(() => {
 <template>
   <ElCard class="card-wrapper sm:flex-1-hidden" body-class="ht50">
     <div class="table-container" :class="{ 'auto-height': autoHeight }">
-      <div v-if="!$slots.header" class="mb-4 flex items-center justify-between">
-        <p class="lt-sm:hidden">{{ moduleName }}</p>
+      <div v-if="!$slots.header" class="mb-4 flex items-center justify-between gap-12px">
+        <div class="min-w-0 flex flex-1 items-center gap-12px">
+          <p class="shrink-0 lt-sm:hidden">{{ moduleName }}</p>
+          <slot name="module-extra"></slot>
+        </div>
         <ElSpace direction="horizontal" wrap justify="end" class="lt-sm:overflow-auto-x">
           <slot name="header-prefix"></slot>
           <slot name="default">

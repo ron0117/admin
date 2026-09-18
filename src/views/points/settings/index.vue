@@ -160,7 +160,6 @@ onMounted(() => {
 
 <template>
   <JQCustomPage>
-    <p class="mb-8px text-13px text-gray-500">{{ $t('page.points.settings.priceHint') }}</p>
     <JQDataTable
       :data="rows"
       :columns="columns"
@@ -171,6 +170,9 @@ onMounted(() => {
       row-key="id"
       @refresh="loadList"
     >
+      <template #module-extra>
+        <ElAlert :title="$t('page.points.settings.priceHint')" type="error" :closable="false" class="min-w-0 flex-1" />
+      </template>
       <template #pointsSummary="{ row }">
         {{ specsSummary(featureRow(row)) }}
       </template>

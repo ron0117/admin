@@ -185,12 +185,12 @@ const routeMap: RouteMap = {
   "login": "/login/:module(pwd-login)?",
   "manage": "/manage",
   "manage_admin": "/manage/admin",
+  "points": "/points",
+  "points_records": "/points/records",
+  "points_settings": "/points/settings",
   "user": "/user",
   "user_list": "/user/list",
-  "user_role": "/user/role",
-  "points": "/points",
-  "points_settings": "/points/settings",
-  "points_records": "/points/records"
+  "user_role": "/user/role"
 };
 
 /**

@@ -22,8 +22,8 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   demo: () => import("@/views/demo/index.vue"),
   home: () => import("@/views/home/index.vue"),
   manage_admin: () => import("@/views/manage/admin/index.vue"),
+  points_records: () => import("@/views/points/records/index.vue"),
+  points_settings: () => import("@/views/points/settings/index.vue"),
   user_list: () => import("@/views/user/list/index.vue"),
   user_role: () => import("@/views/user/role/index.vue"),
-  points_settings: () => import("@/views/points/settings/index.vue"),
-  points_records: () => import("@/views/points/records/index.vue"),
 };

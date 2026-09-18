@@ -99,6 +99,41 @@ export const generatedRoutes: GeneratedRoute[] = [
     ]
   },
   {
+    name: 'points',
+    path: '/points',
+    component: 'layout.base',
+    meta: {
+      title: 'points',
+      i18nKey: 'route.points',
+      icon: 'mdi:circle-multiple-outline',
+      order: 4
+    },
+    children: [
+      {
+        name: 'points_records',
+        path: '/points/records',
+        component: 'view.points_records',
+        meta: {
+          title: 'points_records',
+          i18nKey: 'route.points_records',
+          icon: 'mdi:text-box-outline',
+          order: 2
+        }
+      },
+      {
+        name: 'points_settings',
+        path: '/points/settings',
+        component: 'view.points_settings',
+        meta: {
+          title: 'points_settings',
+          i18nKey: 'route.points_settings',
+          icon: 'mdi:tune-variant',
+          order: 1
+        }
+      }
+    ]
+  },
+  {
     name: 'user',
     path: '/user',
     component: 'layout.base',
@@ -128,41 +163,6 @@ export const generatedRoutes: GeneratedRoute[] = [
           title: 'user_role',
           i18nKey: 'route.user_role',
           icon: 'mdi:account-key-outline',
-          order: 2
-        }
-      }
-    ]
-  },
-  {
-    name: 'points',
-    path: '/points',
-    component: 'layout.base',
-    meta: {
-      title: 'points',
-      i18nKey: 'route.points',
-      icon: 'mdi:circle-multiple-outline',
-      order: 4
-    },
-    children: [
-      {
-        name: 'points_settings',
-        path: '/points/settings',
-        component: 'view.points_settings',
-        meta: {
-          title: 'points_settings',
-          i18nKey: 'route.points_settings',
-          icon: 'mdi:tune-variant',
-          order: 1
-        }
-      },
-      {
-        name: 'points_records',
-        path: '/points/records',
-        component: 'view.points_records',
-        meta: {
-          title: 'points_records',
-          i18nKey: 'route.points_records',
-          icon: 'mdi:text-box-outline',
           order: 2
         }
       }
