@@ -815,6 +815,11 @@ declare namespace App {
             priceHint: string;
             liveSummary: string;
             defaultSummary: string;
+            skillPrompt: string;
+            skillStatus: string;
+            skillConfigured: string;
+            skillNotConfigured: string;
+            skillMax: string;
           };
           records: {
             title: string;

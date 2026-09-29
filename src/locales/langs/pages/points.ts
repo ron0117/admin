@@ -17,7 +17,12 @@ const points_cn: App.I18n.Schema['page']['points'] = {
     remarkMax: '备注最多 200 字',
     priceHint: '改价对正在进行的生成不生效，桌面端下次拉取配置后使用新单价。',
     liveSummary: '优 {high} / 中 {medium} / 良 {good}',
-    defaultSummary: '默认 {n}'
+    defaultSummary: '默认 {n}',
+    skillPrompt: '生图 Skills',
+    skillStatus: 'Skills',
+    skillConfigured: '已配置',
+    skillNotConfigured: '未配置',
+    skillMax: 'Skills 最多 4000 字'
   },
   records: {
     title: '积分流水',
@@ -83,7 +88,12 @@ const points_tw: App.I18n.Schema['page']['points'] = {
     remarkMax: '備註最多 200 字',
     priceHint: '改價對正在進行的生成不生效，桌面端下次拉取配置後使用新單價。',
     liveSummary: '優 {high} / 中 {medium} / 良 {good}',
-    defaultSummary: '預設 {n}'
+    defaultSummary: '預設 {n}',
+    skillPrompt: '生圖 Skills',
+    skillStatus: 'Skills',
+    skillConfigured: '已配置',
+    skillNotConfigured: '未配置',
+    skillMax: 'Skills 最多 4000 字'
   },
   records: {
     title: '積分流水',
@@ -149,7 +159,12 @@ const points_us: App.I18n.Schema['page']['points'] = {
     remarkMax: 'Remark can be at most 200 characters',
     priceHint: 'Price changes do not affect in-flight jobs. Desktop picks up the new price on the next fetch.',
     liveSummary: 'High {high} / Medium {medium} / Good {good}',
-    defaultSummary: 'Default {n}'
+    defaultSummary: 'Default {n}',
+    skillPrompt: 'Image skills',
+    skillStatus: 'Skills',
+    skillConfigured: 'Configured',
+    skillNotConfigured: 'Not configured',
+    skillMax: 'Skills can be at most 4000 characters'
   },
   records: {
     title: 'Point ledger',

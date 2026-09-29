@@ -11,6 +11,7 @@ declare namespace Api {
       menuCode: string;
       name: string;
       remark: string;
+      skillPrompt: string;
       updatedAt: string;
       specs: Spec[];
     }
@@ -21,6 +22,7 @@ declare namespace Api {
 
     interface PatchFeatureReq {
       remark?: string;
+      skillPrompt?: string;
       specs: Array<{ specKey: string; unitPoints: number }>;
     }
 

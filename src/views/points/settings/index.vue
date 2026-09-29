@@ -8,6 +8,7 @@ import { $t } from '@/locales';
 defineOptions({ name: 'PointsSettings' });
 
 const LIVE_MENU = 'generate.create.live';
+const COPYWRITE_MENU = 'generate.create.copywrite';
 
 const loading = ref(false);
 const rows = ref<Api.Points.Feature[]>([]);
@@ -17,6 +18,7 @@ const editing = ref<Api.Points.Feature | null>(null);
 const columns = computed(() => [
   { prop: 'name', label: $t('page.points.settings.feature'), minWidth: 140 },
   { prop: 'pointsSummary', label: $t('page.points.settings.points'), minWidth: 220, slot: 'pointsSummary' },
+  { prop: 'skillStatus', label: $t('page.points.settings.skillStatus'), minWidth: 100, slot: 'skillStatus' },
   { prop: 'remark', label: $t('page.points.settings.remark'), minWidth: 180, slot: 'remark' },
   { prop: 'updatedAt', label: $t('page.points.settings.updatedAt'), minWidth: 170, formatTime: true },
   { prop: 'actions', label: $t('common.operate'), minWidth: 120, slot: 'actions', fixed: 'right' }
@@ -24,6 +26,7 @@ const columns = computed(() => [
 
 const formItems = computed<FormItem[]>(() => {
   const isLive = editing.value?.menuCode === LIVE_MENU;
+  const isCopywrite = editing.value?.menuCode === COPYWRITE_MENU;
   const intRule = [
     {
       required: true,
@@ -40,6 +43,20 @@ const formItems = computed<FormItem[]>(() => {
     span: 2,
     componentProps: { min: 0, step: 1, precision: 0, controls: true },
     rules: intRule
+  });
+  const textareaItem = (
+    prop: string,
+    label: string,
+    max: number,
+    maxMessage: string,
+    rows: number
+  ): FormItem => ({
+    prop,
+    label,
+    type: 'textarea',
+    span: 2,
+    componentProps: { maxlength: max, showWordLimit: true, rows },
+    rules: [{ max, message: maxMessage, trigger: 'blur' }]
   });
   return [
     {
@@ -63,14 +80,18 @@ const formItems = computed<FormItem[]>(() => {
           numberItem('unitGood', $t('page.points.settings.unitGood'))
         ]
       : [numberItem('unitPoints', $t('page.points.settings.unitPoints'))]),
-    {
-      prop: 'remark',
-      label: $t('page.points.settings.remark'),
-      type: 'textarea',
-      span: 2,
-      componentProps: { maxlength: 200, showWordLimit: true, rows: 3 },
-      rules: [{ max: 200, message: $t('page.points.settings.remarkMax'), trigger: 'blur' }]
-    }
+    ...(isCopywrite
+      ? []
+      : [
+          textareaItem(
+            'skillPrompt',
+            $t('page.points.settings.skillPrompt'),
+            4000,
+            $t('page.points.settings.skillMax'),
+            6
+          )
+        ]),
+    textareaItem('remark', $t('page.points.settings.remark'), 200, $t('page.points.settings.remarkMax'), 3)
   ];
 });
 
@@ -84,6 +105,7 @@ const formInitial = computed(() => {
       unitHigh: 0,
       unitMedium: 0,
       unitGood: 0,
+      skillPrompt: '',
       remark: ''
     };
   }
@@ -95,6 +117,7 @@ const formInitial = computed(() => {
     unitHigh: byKey('high'),
     unitMedium: byKey('medium'),
     unitGood: byKey('good'),
+    skillPrompt: row.skillPrompt ?? '',
     remark: row.remark ?? ''
   };
 });
@@ -112,6 +135,15 @@ const specsSummary = (row: Api.Points.Feature) => {
   }
   const def = row.specs.find(spec => spec.specKey === 'default');
   return $t('page.points.settings.defaultSummary', { n: def?.unitPoints ?? 0 });
+};
+
+const skillStatusLabel = (row: Api.Points.Feature) => {
+  if (row.menuCode === COPYWRITE_MENU) {
+    return $t('page.points.settings.skillNotConfigured');
+  }
+  return row.skillPrompt?.trim()
+    ? $t('page.points.settings.skillConfigured')
+    : $t('page.points.settings.skillNotConfigured');
 };
 
 const featureRow = (row: unknown) => row as Api.Points.Feature;
@@ -136,6 +168,7 @@ const handleFormSubmit = async (data: Record<string, unknown>) => {
     return;
   }
   const isLive = editing.value.menuCode === LIVE_MENU;
+  const isCopywrite = editing.value.menuCode === COPYWRITE_MENU;
   const specs = isLive
     ? [
         { specKey: 'high', unitPoints: Number(data.unitHigh) },
@@ -144,7 +177,11 @@ const handleFormSubmit = async (data: Record<string, unknown>) => {
       ]
     : [{ specKey: 'default', unitPoints: Number(data.unitPoints) }];
   const remark = String(data.remark ?? '');
-  const { error } = await fetchPatchPointFeature(editing.value.menuCode, { remark, specs });
+  const payload: Api.Points.PatchFeatureReq = { remark, specs };
+  if (!isCopywrite) {
+    payload.skillPrompt = String(data.skillPrompt ?? '');
+  }
+  const { error } = await fetchPatchPointFeature(editing.value.menuCode, payload);
   if (error) {
     return;
   }
@@ -175,6 +212,9 @@ onMounted(() => {
       </template>
       <template #pointsSummary="{ row }">
         {{ specsSummary(featureRow(row)) }}
+      </template>
+      <template #skillStatus="{ row }">
+        {{ skillStatusLabel(featureRow(row)) }}
       </template>
       <template #remark="{ row }">
         {{ featureRow(row).remark || '—' }}
