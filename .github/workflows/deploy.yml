@@ -1,0 +1,35 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull on server and deploy admin
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${DEPLOY_HOST}" || -z "${DEPLOY_USER}" || -z "${DEPLOY_SSH_KEY}" ]]; then
+            echo "请在本仓库 Settings → Secrets and variables → Actions 配置 DEPLOY_HOST、DEPLOY_USER、DEPLOY_SSH_KEY"
+            exit 1
+          fi
+          DEPLOY_PATH="${DEPLOY_PATH:-/opt/ai-platform}"
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new \
+            "${DEPLOY_USER}@${DEPLOY_HOST}" \
+            "DEPLOY_PATH='${DEPLOY_PATH}' bash -s" <<'EOF'
+          set -euo pipefail
+          git -C "${DEPLOY_PATH}/nestjs" pull --ff-only
+          git -C "${DEPLOY_PATH}/admin" pull --ff-only
+          bash "${DEPLOY_PATH}/nestjs/deploy/docker/deploy.sh" admin
+          EOF
