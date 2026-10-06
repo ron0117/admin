@@ -3,6 +3,9 @@ import { computed, onMounted, ref } from 'vue';
 import type { FormItem } from '@/components';
 import { JQCustomPage, JQDataTable, JQDialogForm } from '@/components';
 import { fetchPatchPointFeature, fetchPointFeatures } from '@/service/api';
+import { skillHintForMenu } from '@/constants/point-feature-skill-hint';
+import { skillSpecForMenu } from '@/constants/point-feature-skill-spec';
+import { stripSkillPromptParamLabels } from '@/utils/skill-prompt-strip';
 import { $t } from '@/locales';
 
 defineOptions({ name: 'PointsSettings' });
@@ -14,6 +17,18 @@ const loading = ref(false);
 const rows = ref<Api.Points.Feature[]>([]);
 const formVisible = ref(false);
 const editing = ref<Api.Points.Feature | null>(null);
+
+const editingSkillSpec = computed(() =>
+  editing.value ? skillSpecForMenu(editing.value.menuCode) : undefined
+);
+
+const skillTextareaRows = computed(() => {
+  const code = editing.value?.menuCode;
+  if (code === 'generate.create.fission' || code === 'generate.create.live') {
+    return 14;
+  }
+  return 8;
+});
 
 const columns = computed(() => [
   { prop: 'name', label: $t('page.points.settings.feature'), minWidth: 140 },
@@ -49,13 +64,13 @@ const formItems = computed<FormItem[]>(() => {
     label: string,
     max: number,
     maxMessage: string,
-    rows: number
+    textareaRows: number
   ): FormItem => ({
     prop,
     label,
     type: 'textarea',
     span: 2,
-    componentProps: { maxlength: max, showWordLimit: true, rows },
+    componentProps: { maxlength: max, showWordLimit: true, rows: textareaRows },
     rules: [{ max, message: maxMessage, trigger: 'blur' }]
   });
   return [
@@ -83,13 +98,14 @@ const formItems = computed<FormItem[]>(() => {
     ...(isCopywrite
       ? []
       : [
-          textareaItem(
-            'skillPrompt',
-            $t('page.points.settings.skillPrompt'),
-            4000,
-            $t('page.points.settings.skillMax'),
-            6
-          )
+          {
+            prop: 'skillPrompt',
+            label: $t('page.points.settings.skillPrompt'),
+            type: 'slot',
+            slotName: 'skillPromptField',
+            span: 2,
+            rules: [{ max: 4000, message: $t('page.points.settings.skillMax'), trigger: 'blur' }]
+          } as FormItem
         ]),
     textareaItem('remark', $t('page.points.settings.remark'), 200, $t('page.points.settings.remarkMax'), 3)
   ];
@@ -117,7 +133,7 @@ const formInitial = computed(() => {
     unitHigh: byKey('high'),
     unitMedium: byKey('medium'),
     unitGood: byKey('good'),
-    skillPrompt: row.skillPrompt ?? '',
+    skillPrompt: stripSkillPromptParamLabels(row.skillPrompt ?? ''),
     remark: row.remark ?? ''
   };
 });
@@ -179,7 +195,7 @@ const handleFormSubmit = async (data: Record<string, unknown>) => {
   const remark = String(data.remark ?? '');
   const payload: Api.Points.PatchFeatureReq = { remark, specs };
   if (!isCopywrite) {
-    payload.skillPrompt = String(data.skillPrompt ?? '');
+    payload.skillPrompt = stripSkillPromptParamLabels(String(data.skillPrompt ?? ''));
   }
   const { error } = await fetchPatchPointFeature(editing.value.menuCode, payload);
   if (error) {
@@ -231,9 +247,106 @@ onMounted(() => {
       :title="$t('page.points.settings.editTitle')"
       :form-items="formItems"
       :initial-data="formInitial"
-      width="560px"
+      width="640px"
       :close-on-click-modal="false"
       :on-submit="handleFormSubmit"
-    />
+    >
+      <template #skillPromptField="{ form }">
+        <div class="skill-prompt-editor">
+          <ElInput
+            v-model="form.skillPrompt"
+            type="textarea"
+            :rows="skillTextareaRows"
+            maxlength="4000"
+            show-word-limit
+            :placeholder="skillHintForMenu(editing?.menuCode ?? '')"
+          />
+          <div v-if="editingSkillSpec" class="skill-param-panel">
+            <p class="skill-param-panel__title">{{ $t('page.points.settings.skillParamTitle') }}</p>
+            <p class="skill-param-panel__hint">{{ $t('page.points.settings.skillParamHint') }}</p>
+            <div
+              v-for="section in editingSkillSpec.sections"
+              :key="section.key"
+              class="skill-param-section"
+            >
+              <p v-if="editingSkillSpec.sections.length > 1" class="skill-param-section__head">
+                【{{ section.key }}】{{ section.title }}
+              </p>
+              <ul class="skill-param-list">
+                <li v-for="param in section.params" :key="param.key">
+                  <code>${{ param.key }}</code>
+                  <span class="skill-param-dash">—</span>
+                  <span>{{ param.label }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </template>
+    </JQDialogForm>
   </JQCustomPage>
 </template>
+
+<style scoped>
+.skill-prompt-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.skill-param-panel {
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  background: var(--el-fill-color-light);
+  border-radius: 6px;
+}
+
+.skill-param-panel__title {
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: var(--el-text-color-primary);
+}
+
+.skill-param-panel__hint {
+  margin: 0 0 8px;
+  color: var(--el-text-color-secondary);
+}
+
+.skill-param-section + .skill-param-section {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--el-border-color-lighter);
+}
+
+.skill-param-section__head {
+  margin: 0 0 6px;
+  font-weight: 500;
+}
+
+.skill-param-list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.skill-param-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.skill-param-list code {
+  padding: 0 4px;
+  font-size: 12px;
+  background: var(--el-fill-color);
+  border-radius: 4px;
+}
+
+.skill-param-dash {
+  color: var(--el-text-color-secondary);
+}
+</style>

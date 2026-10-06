@@ -110,6 +110,47 @@ export const generatedRoutes: GeneratedRoute[] = [
     },
     children: [
       {
+        name: 'points_recharge',
+        path: '/points/recharge',
+        meta: {
+          title: 'points_recharge',
+          i18nKey: 'route.points_recharge'
+        },
+        children: [
+          {
+            name: 'points_recharge_cards',
+            path: '/points/recharge/cards',
+            component: 'view.points_recharge_cards',
+            meta: {
+              title: 'points_recharge_cards',
+              i18nKey: 'route.points_recharge_cards',
+              icon: 'mdi:ticket-confirmation-outline',
+              order: 1
+            }
+          },
+          {
+            name: 'points_recharge_packages',
+            path: '/points/recharge/packages',
+            component: 'view.points_recharge_packages',
+            meta: {
+              title: 'points_recharge_packages',
+              i18nKey: 'route.points_recharge_packages',
+              hideInMenu: true
+            }
+          },
+          {
+            name: 'points_recharge_records',
+            path: '/points/recharge/records',
+            component: 'view.points_recharge_records',
+            meta: {
+              title: 'points_recharge_records',
+              i18nKey: 'route.points_recharge_records',
+              hideInMenu: true
+            }
+          }
+        ]
+      },
+      {
         name: 'points_records',
         path: '/points/records',
         component: 'view.points_records',

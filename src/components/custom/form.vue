@@ -18,6 +18,7 @@ import type {
 import dayjs from 'dayjs';
 import { useI18n } from 'vue-i18n';
 import { createI18nField } from '@/utils/common';
+import { getCurrentMonthDatetimeRange } from '@/utils/time';
 import I18nImage from '@/components/i18n/i18n-image.vue';
 import I18nInput from '@/components/i18n/i18n-input.vue';
 
@@ -259,6 +260,9 @@ const initFormData = () => {
         case 'i18nImage':
           data[item.prop] = createI18nField<string | CommonType.I18nResourceConfig>({ img: '' });
           break;
+        case 'datetimerange':
+          data[item.prop] = normalizeFieldValue(item, getCurrentMonthDatetimeRange());
+          break;
         default:
           data[item.prop] = '';
       }
@@ -266,6 +270,7 @@ const initFormData = () => {
   });
 
   formData.value = { ...props.initialData, ...data };
+  emit('update:modelValue', { ...formData.value });
 };
 
 // 字段变化处理

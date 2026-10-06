@@ -820,6 +820,8 @@ declare namespace App {
             skillConfigured: string;
             skillNotConfigured: string;
             skillMax: string;
+            skillParamTitle: string;
+            skillParamHint: string;
           };
           records: {
             title: string;
@@ -839,6 +841,7 @@ declare namespace App {
             typeRefund: string;
             typeIncrease: string;
             typeDecrease: string;
+            typeRecharge: string;
             statusPending: string;
             statusCompleted: string;
             statusRefunded: string;
@@ -853,6 +856,70 @@ declare namespace App {
             free: string;
             live: string;
             copywrite: string;
+          };
+          rechargePackages: {
+            title: string;
+            createTitle: string;
+            editTitle: string;
+            amount: string;
+            amountInvalid: string;
+            basePoints: string;
+            bonusPoints: string;
+            totalPoints: string;
+            onShelf: string;
+            shelfOn: string;
+            shelfOff: string;
+            sort: string;
+            updatedAt: string;
+            deleteConfirm: string;
+          };
+          rechargeRecords: {
+            title: string;
+            user: string;
+            userPlaceholder: string;
+            status: string;
+            time: string;
+            amount: string;
+            fee: string;
+            net: string;
+            points: string;
+            createdAt: string;
+            paidAt: string;
+            orderNo: string;
+            statusPending: string;
+            statusPaid: string;
+            statusFailed: string;
+            statusClosed: string;
+          };
+          rechargeCards: {
+            title: string;
+            generate: string;
+            generateTitle: string;
+            generateCount: string;
+            generatePoints: string;
+            generateSuccess: string;
+            export: string;
+            exportFailed: string;
+            code: string;
+            codeKeywordPlaceholder: string;
+            points: string;
+            status: string;
+            statusUnused: string;
+            statusRedeemed: string;
+            batchNote: string;
+            createdAt: string;
+            redeemedAt: string;
+            redeemedUser: string;
+            redeemedUserPlaceholder: string;
+            copy: string;
+            copySuccess: string;
+            copyFailed: string;
+            shopConfig: string;
+            shopConfigTitle: string;
+            shopUrl: string;
+            shopUrlPlaceholder: string;
+            shopConfigSaveSuccess: string;
+            shopConfigSaveFailed: string;
           };
           user: {
             points: string;

@@ -70,7 +70,9 @@ const search = () => {
 
 const reset = () => {
   formContentRef.value?.resetFields();
-
+  nextTick(() => {
+    search();
+  });
   emit('reset');
 };
 
@@ -102,6 +104,9 @@ onMounted(() => {
   nextTick(() => {
     formContentRef.value?.initFormData();
     formContentRef.value?.clearValidate();
+    nextTick(() => {
+      search();
+    });
   });
 });
 </script>

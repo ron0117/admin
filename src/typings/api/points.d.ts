@@ -26,7 +26,7 @@ declare namespace Api {
       specs: Array<{ specKey: string; unitPoints: number }>;
     }
 
-    type LedgerType = 'consume' | 'refund' | 'admin_increase' | 'admin_decrease';
+    type LedgerType = 'consume' | 'refund' | 'admin_increase' | 'admin_decrease' | 'recharge';
     type LedgerStatus = 'pending' | 'completed' | 'refunded';
 
     interface Ledger {

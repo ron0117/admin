@@ -40,6 +40,10 @@ declare module "@elegant-router/types" {
     "manage": "/manage";
     "manage_admin": "/manage/admin";
     "points": "/points";
+    "points_recharge": "/points/recharge";
+    "points_recharge_cards": "/points/recharge/cards";
+    "points_recharge_packages": "/points/recharge/packages";
+    "points_recharge_records": "/points/recharge/records";
     "points_records": "/points/records";
     "points_settings": "/points/settings";
     "user": "/user";
@@ -124,6 +128,9 @@ declare module "@elegant-router/types" {
     | "demo"
     | "home"
     | "manage_admin"
+    | "points_recharge_cards"
+    | "points_recharge_packages"
+    | "points_recharge_records"
     | "points_records"
     | "points_settings"
     | "user_list"

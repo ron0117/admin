@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import type { FormItem } from '@/components';
 import { JQCustomPage, JQDataTable, JQSearch } from '@/components';
 import { fetchPointLedgers } from '@/service/api';
 import { $t } from '@/locales';
+import { getCurrentMonthDatetimeRange, parseSearchTimeRange } from '@/utils/time';
+
+const [defaultFrom, defaultTo] = getCurrentMonthDatetimeRange();
 
 defineOptions({ name: 'PointsRecords' });
 
@@ -37,14 +40,17 @@ const query = reactive<{
   keyword: '',
   type: '',
   menuCode: '',
-  status: ''
+  status: '',
+  from: defaultFrom,
+  to: defaultTo
 });
 
 const typeOptions = computed(() => [
   { label: $t('page.points.records.typeConsume'), value: 'consume' },
   { label: $t('page.points.records.typeRefund'), value: 'refund' },
   { label: $t('page.points.records.typeIncrease'), value: 'admin_increase' },
-  { label: $t('page.points.records.typeDecrease'), value: 'admin_decrease' }
+  { label: $t('page.points.records.typeDecrease'), value: 'admin_decrease' },
+  { label: $t('page.points.records.typeRecharge'), value: 'recharge' }
 ]);
 
 const statusOptions = computed(() => [
@@ -112,6 +118,7 @@ const typeLabel = (type: Api.Points.LedgerType) => {
   if (type === 'consume') return $t('page.points.records.typeConsume');
   if (type === 'refund') return $t('page.points.records.typeRefund');
   if (type === 'admin_increase') return $t('page.points.records.typeIncrease');
+  if (type === 'recharge') return $t('page.points.records.typeRecharge');
   return $t('page.points.records.typeDecrease');
 };
 
@@ -182,21 +189,12 @@ const loadList = async () => {
   pagination.total = data.total;
 };
 
-const parseRange = (value: unknown): { from?: string; to?: string } => {
-  if (!Array.isArray(value) || value.length < 2) {
-    return {};
-  }
-  const from = value[0] ? String(value[0]) : undefined;
-  const to = value[1] ? String(value[1]) : undefined;
-  return { from, to };
-};
-
 const handleSearch = (data: Record<string, unknown>) => {
   query.keyword = String(data.keyword || '');
   query.type = (data.type as Api.Points.LedgerType) || '';
   query.menuCode = String(data.menuCode || '');
   query.status = (data.status as Api.Points.LedgerStatus) || '';
-  const range = parseRange(data.timeRange);
+  const range = parseSearchTimeRange(data.timeRange);
   query.from = range.from;
   query.to = range.to;
   pagination.currentPage = 1;
@@ -208,10 +206,7 @@ const handleReset = () => {
   query.type = '';
   query.menuCode = '';
   query.status = '';
-  query.from = undefined;
-  query.to = undefined;
   pagination.currentPage = 1;
-  loadList();
 };
 
 const copyRequestId = async (id: string) => {
@@ -223,9 +218,6 @@ const copyRequestId = async (id: string) => {
   }
 };
 
-onMounted(() => {
-  loadList();
-});
 </script>
 
 <template>

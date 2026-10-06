@@ -1,4 +1,23 @@
 import dayjs from 'dayjs';
+
+/** 与 JQForm datetimerange 的 valueFormat 一致 */
+export const ADMIN_DATETIMERANGE_VALUE_FORMAT = 'YYYY-MM-DD HH:mm:ss.SSS';
+
+/** 搜索区默认：当月 1 日 00:00:00.000 — 当月最后一日 23:59:59.999 */
+export function getCurrentMonthDatetimeRange(): [string, string] {
+  const start = dayjs().startOf('month').format(ADMIN_DATETIMERANGE_VALUE_FORMAT);
+  const end = dayjs().endOf('month').millisecond(999).format(ADMIN_DATETIMERANGE_VALUE_FORMAT);
+  return [start, end];
+}
+
+export function parseSearchTimeRange(value: unknown): { from?: string; to?: string } {
+  if (!Array.isArray(value) || value.length < 2) {
+    return {};
+  }
+  const from = value[0] ? String(value[0]) : undefined;
+  const to = value[1] ? String(value[1]) : undefined;
+  return { from, to };
+}
 /**
  * 時間戳減去當前時間，返回時分秒
  *
