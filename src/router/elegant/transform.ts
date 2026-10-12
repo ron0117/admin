@@ -180,6 +180,7 @@ const routeMap: RouteMap = {
   "403": "/403",
   "404": "/404",
   "500": "/500",
+  "ai-config": "/ai-config",
   "demo": "/demo",
   "home": "/home",
   "login": "/login/:module(pwd-login)?",
