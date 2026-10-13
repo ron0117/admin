@@ -53,6 +53,7 @@ export function setupElegantRouter() {
 
       const extras: Record<string, Partial<RouteMeta>> = {
         home: { icon: 'mdi:monitor-dashboard', order: 1 },
+        'ai-config': { icon: 'mdi:connection', order: 5 },
         demo: { icon: 'mdi:flask-outline', order: 99, hideInMenu: true },
         manage: { icon: 'mdi:shield-account-outline', order: 2 },
         manage_admin: { icon: 'mdi:account-tie-outline', order: 1 },

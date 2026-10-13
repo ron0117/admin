@@ -40,6 +40,17 @@ export const generatedRoutes: GeneratedRoute[] = [
     }
   },
   {
+    name: 'ai-config',
+    path: '/ai-config',
+    component: 'layout.base$view.ai-config',
+    meta: {
+      title: 'ai-config',
+      i18nKey: 'route.ai-config',
+      icon: 'mdi:connection',
+      order: 5
+    }
+  },
+  {
     name: 'demo',
     path: '/demo',
     component: 'layout.base$view.demo',

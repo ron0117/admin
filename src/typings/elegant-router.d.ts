@@ -34,6 +34,7 @@ declare module "@elegant-router/types" {
     "403": "/403";
     "404": "/404";
     "500": "/500";
+    "ai-config": "/ai-config";
     "demo": "/demo";
     "home": "/home";
     "login": "/login/:module(pwd-login)?";
@@ -97,6 +98,7 @@ declare module "@elegant-router/types" {
     | "403"
     | "404"
     | "500"
+    | "ai-config"
     | "demo"
     | "home"
     | "login"
@@ -125,6 +127,7 @@ declare module "@elegant-router/types" {
     | "404"
     | "500"
     | "login"
+    | "ai-config"
     | "demo"
     | "home"
     | "manage_admin"

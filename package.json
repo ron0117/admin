@@ -44,6 +44,7 @@
     "preview": "vite preview",
     "release": "sa release",
     "typecheck": "vue-tsc --noEmit --skipLibCheck",
+    "test:ai-config": "tsx --test tests/ai-config.test.ts",
     "update-pkg": "sa update-pkg"
   },
   "dependencies": {

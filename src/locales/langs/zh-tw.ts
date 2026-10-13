@@ -293,6 +293,7 @@ const local: App.I18n.Schema = {
     }
   },
   route: {
+    'ai-config': '模型服務',
     login: '登錄',
     403: '無權限',
     404: '頁面不存在',
