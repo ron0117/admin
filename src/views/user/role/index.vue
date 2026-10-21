@@ -9,6 +9,7 @@ import {
   fetchPutRoleMenus,
   fetchRoleDetail,
   fetchRoleList,
+  fetchSetRegistrationDefault,
   fetchUpdateRole
 } from '@/service/api';
 import { $t } from '@/locales';
@@ -21,6 +22,7 @@ type MenuTreeInstance = {
 };
 
 const loading = ref(false);
+const settingDefault = ref<string | null>(null);
 const rows = ref<Api.Role.Item[]>([]);
 const pagination = reactive({
   currentPage: 1,
@@ -88,8 +90,9 @@ const columns = computed(() => [
   { prop: 'name', label: $t('page.manage.role.roleName'), minWidth: 160 },
   { prop: 'remark', label: $t('page.manage.role.roleDesc'), minWidth: 200 },
   { prop: 'status', label: $t('page.manage.role.roleStatus'), minWidth: 120, slot: 'status' },
+  { prop: 'isRegistrationDefault', label: '注册默认角色', minWidth: 130, slot: 'registrationDefault' },
   { prop: 'createdAt', label: $t('page.manage.role.createdAt'), minWidth: 170, formatTime: true },
-  { prop: 'actions', label: $t('common.operate'), minWidth: 280, slot: 'actions', fixed: 'right' }
+  { prop: 'actions', label: $t('common.operate'), minWidth: 400, slot: 'actions', fixed: 'right' }
 ]);
 
 const formTitle = computed(() =>
@@ -208,6 +211,28 @@ const openMenus = async (row: Api.Role.Item) => {
   treeRef.value?.setCheckedKeys(detailRes.data.menuCodes ?? []);
 };
 
+const setRegistrationDefault = async (row: Api.Role.Item) => {
+  if (settingDefault.value || row.isRegistrationDefault || row.status !== 'active') return;
+  try {
+    await ElMessageBox.confirm(
+      `新注册用户将自动获得「${row.name}」的菜单权限。已有用户的角色保持不变。`,
+      '设置注册默认角色',
+      { confirmButtonText: '确定设置', cancelButtonText: '取消', type: 'warning', closeOnClickModal: false }
+    );
+  } catch {
+    return;
+  }
+  settingDefault.value = row.id;
+  try {
+    const { error } = await fetchSetRegistrationDefault(row.id);
+    if (error) return;
+    window.$message?.success('注册默认角色已更新');
+    await loadList();
+  } finally {
+    settingDefault.value = null;
+  }
+};
+
 const saveMenus = async () => {
   if (!menuTarget.value) {
     return;
@@ -269,10 +294,23 @@ onMounted(() => {
           {{ $t('page.manage.role.configureMenus') }}
         </ElButton>
         <ElButton
+          v-if="!row.isRegistrationDefault && row.status === 'active'"
+          type="primary"
+          plain
+          size="small"
+          :loading="settingDefault === row.id"
+          :disabled="settingDefault !== null"
+          @click="setRegistrationDefault(roleRow(row))"
+        >
+          设为注册默认
+        </ElButton>
+        <ElButton
           v-if="row.status === 'active'"
           type="danger"
           plain
           size="small"
+          :disabled="row.isRegistrationDefault || settingDefault !== null"
+          :title="row.isRegistrationDefault ? '请先指定其他默认注册角色，再停用' : undefined"
           @click="patchStatus(roleRow(row), 'disabled')"
         >
           {{ $t('common.disable') }}
@@ -280,6 +318,10 @@ onMounted(() => {
         <ElButton v-else type="success" plain size="small" @click="patchStatus(roleRow(row), 'active')">
           {{ $t('common.enable') }}
         </ElButton>
+      </template>
+      <template #registrationDefault="{ row }">
+        <ElTag v-if="row.isRegistrationDefault" type="success">新用户默认</ElTag>
+        <span v-else>—</span>
       </template>
     </JQDataTable>
 

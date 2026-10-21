@@ -58,3 +58,10 @@ export function fetchMenuTree() {
     method: 'get'
   });
 }
+
+export function fetchSetRegistrationDefault(id: string) {
+  return nestRequest<RoleItem>({
+    url: `/admin/roles/${id}/registration-default`,
+    method: 'put'
+  });
+}
