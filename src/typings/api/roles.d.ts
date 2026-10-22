@@ -15,6 +15,7 @@ declare namespace Api {
       name: string;
       remark: string | null;
       status: Status;
+      isDefault: boolean;
       createdAt: string;
       updatedAt: string;
       menuCodes?: string[];

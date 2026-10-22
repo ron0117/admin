@@ -656,8 +656,15 @@ declare namespace App {
             statusActive: string;
             statusDisabled: string;
             confirmDisable: string;
+            confirmDisableDefault: string;
             confirmEnable: string;
             configureMenus: string;
+            registerDefault: string;
+            defaultTag: string;
+            setDefault: string;
+            clearDefault: string;
+            confirmSetDefault: string;
+            confirmClearDefault: string;
             menusHint: string;
             form: {
               roleName: string;

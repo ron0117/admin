@@ -29,7 +29,11 @@ jobs:
             "${DEPLOY_USER}@${DEPLOY_HOST}" \
             "DEPLOY_PATH='${DEPLOY_PATH}' bash -s" <<'EOF'
           set -euo pipefail
-          git -C "${DEPLOY_PATH}/nestjs" pull --ff-only
-          git -C "${DEPLOY_PATH}/admin" pull --ff-only
+          sync_repo() {
+            git -C "$1" fetch origin main
+            git -C "$1" reset --hard origin/main
+          }
+          sync_repo "${DEPLOY_PATH}/nestjs"
+          sync_repo "${DEPLOY_PATH}/admin"
           bash "${DEPLOY_PATH}/nestjs/deploy/docker/deploy.sh" admin
           EOF

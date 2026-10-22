@@ -4,11 +4,13 @@ import { ElMessageBox } from 'element-plus';
 import type { FormItem } from '@/components';
 import { JQCustomPage, JQDataTable, JQDialogForm, JQSearch } from '@/components';
 import {
+  fetchClearDefaultRole,
   fetchCreateRole,
   fetchMenuTree,
   fetchPutRoleMenus,
   fetchRoleDetail,
   fetchRoleList,
+  fetchSetDefaultRole,
   fetchUpdateRole
 } from '@/service/api';
 import { $t } from '@/locales';
@@ -88,8 +90,9 @@ const columns = computed(() => [
   { prop: 'name', label: $t('page.manage.role.roleName'), minWidth: 160 },
   { prop: 'remark', label: $t('page.manage.role.roleDesc'), minWidth: 200 },
   { prop: 'status', label: $t('page.manage.role.roleStatus'), minWidth: 120, slot: 'status' },
+  { prop: 'isDefault', label: $t('page.manage.role.registerDefault'), minWidth: 120, slot: 'isDefault' },
   { prop: 'createdAt', label: $t('page.manage.role.createdAt'), minWidth: 170, formatTime: true },
-  { prop: 'actions', label: $t('common.operate'), minWidth: 280, slot: 'actions', fixed: 'right' }
+  { prop: 'actions', label: $t('common.operate'), minWidth: 400, slot: 'actions', fixed: 'right' }
 ]);
 
 const formTitle = computed(() =>
@@ -174,7 +177,11 @@ const handleFormSubmit = async (data: Record<string, string>) => {
 
 const patchStatus = async (row: Api.Role.Item, status: Api.Role.Status) => {
   const confirmText =
-    status === 'disabled' ? $t('page.manage.role.confirmDisable') : $t('page.manage.role.confirmEnable');
+    status === 'disabled'
+      ? row.isDefault
+        ? $t('page.manage.role.confirmDisableDefault')
+        : $t('page.manage.role.confirmDisable')
+      : $t('page.manage.role.confirmEnable');
   try {
     await ElMessageBox.confirm(confirmText, $t('common.tip'), {
       confirmButtonText: $t('common.confirm'),
@@ -186,6 +193,44 @@ const patchStatus = async (row: Api.Role.Item, status: Api.Role.Status) => {
     return;
   }
   const { error } = await fetchUpdateRole(row.id, { status });
+  if (error) {
+    return;
+  }
+  window.$message?.success($t('common.updateSuccess'));
+  await loadList();
+};
+
+const confirmAction = async (message: string) => {
+  try {
+    await ElMessageBox.confirm(message, $t('common.tip'), {
+      confirmButtonText: $t('common.confirm'),
+      cancelButtonText: $t('common.cancel'),
+      type: 'warning',
+      closeOnClickModal: false
+    });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const setDefault = async (row: Api.Role.Item) => {
+  if (!(await confirmAction($t('page.manage.role.confirmSetDefault')))) {
+    return;
+  }
+  const { error } = await fetchSetDefaultRole(row.id);
+  if (error) {
+    return;
+  }
+  window.$message?.success($t('common.updateSuccess'));
+  await loadList();
+};
+
+const clearDefault = async () => {
+  if (!(await confirmAction($t('page.manage.role.confirmClearDefault')))) {
+    return;
+  }
+  const { error } = await fetchClearDefaultRole();
   if (error) {
     return;
   }
@@ -263,10 +308,32 @@ onMounted(() => {
           {{ statusLabel(row.status) }}
         </ElTag>
       </template>
+      <template #isDefault="{ row }">
+        <ElTag v-if="row.isDefault" type="warning">{{ $t('page.manage.role.defaultTag') }}</ElTag>
+        <span v-else>-</span>
+      </template>
       <template #actions="{ row }">
         <ElButton type="primary" plain size="small" @click="openEdit(roleRow(row))">{{ $t('common.edit') }}</ElButton>
         <ElButton type="primary" plain size="small" @click="openMenus(roleRow(row))">
           {{ $t('page.manage.role.configureMenus') }}
+        </ElButton>
+        <ElButton
+          v-if="row.isDefault"
+          type="warning"
+          plain
+          size="small"
+          @click="clearDefault"
+        >
+          {{ $t('page.manage.role.clearDefault') }}
+        </ElButton>
+        <ElButton
+          v-else-if="row.status === 'active'"
+          type="warning"
+          plain
+          size="small"
+          @click="setDefault(roleRow(row))"
+        >
+          {{ $t('page.manage.role.setDefault') }}
         </ElButton>
         <ElButton
           v-if="row.status === 'active'"

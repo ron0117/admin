@@ -44,6 +44,20 @@ export function fetchUpdateRole(
   });
 }
 
+export function fetchSetDefaultRole(id: string) {
+  return nestRequest<RoleItem>({
+    url: `/admin/roles/${id}/default`,
+    method: 'put'
+  });
+}
+
+export function fetchClearDefaultRole() {
+  return nestRequest<{ ok: true }>({
+    url: '/admin/roles/default',
+    method: 'delete'
+  });
+}
+
 export function fetchPutRoleMenus(id: string, codes: string[]) {
   return nestRequest<RoleItem>({
     url: `/admin/roles/${id}/menus`,
