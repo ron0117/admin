@@ -36,7 +36,15 @@ const formItems = computed<FormItem[]>(() => [
     type: 'number',
     span: 2,
     componentProps: { min: 1, step: 1, precision: 0, controls: true },
-    rules: [{ required: true, type: 'number', min: 1, message: $t('page.points.rechargePackages.amountInvalid'), trigger: 'blur' }]
+    rules: [
+      {
+        required: true,
+        type: 'number',
+        min: 1,
+        message: $t('page.points.rechargePackages.amountInvalid'),
+        trigger: 'blur'
+      }
+    ]
   },
   {
     prop: 'basePoints',
@@ -122,20 +130,18 @@ async function onSubmit(form: Record<string, unknown>) {
     const { error } = await fetchCreateRechargePackage(payload);
     if (error) return;
   }
-  window.$message?.success(
-    editing.value ? $t('common.modifySuccess') : $t('common.addSuccess')
-  );
+  window.$message?.success(editing.value ? $t('common.modifySuccess') : $t('common.addSuccess'));
   formVisible.value = false;
   await load();
 }
 
 async function onDelete(row: Api.Recharge.Package) {
   try {
-    await ElMessageBox.confirm(
-      $t('page.points.rechargePackages.deleteConfirm'),
-      $t('common.tip'),
-      { type: 'warning', confirmButtonText: $t('common.confirm'), cancelButtonText: $t('common.cancel') }
-    );
+    await ElMessageBox.confirm($t('page.points.rechargePackages.deleteConfirm'), $t('common.tip'), {
+      type: 'warning',
+      confirmButtonText: $t('common.confirm'),
+      cancelButtonText: $t('common.cancel')
+    });
   } catch {
     return;
   }
@@ -144,7 +150,7 @@ async function onDelete(row: Api.Recharge.Package) {
 }
 
 onMounted(() => {
-  void load();
+  load();
 });
 </script>
 

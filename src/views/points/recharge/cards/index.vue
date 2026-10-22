@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import type { FormItem } from '@/components';
 import { JQCustomPage, JQDataTable, JQDialogForm, JQSearch } from '@/components';
@@ -11,8 +11,8 @@ import {
   fetchRechargeCards,
   patchRechargeCardShopConfig
 } from '@/service/api';
-import { $t } from '@/locales';
 import { getCurrentMonthDatetimeRange, parseSearchTimeRange } from '@/utils/time';
+import { $t } from '@/locales';
 
 const [defaultFrom, defaultTo] = getCurrentMonthDatetimeRange();
 
@@ -171,7 +171,7 @@ function onSearch(form: Record<string, unknown>) {
   query.from = range.from;
   query.to = range.to;
   pagination.currentPage = 1;
-  void loadList();
+  loadList();
 }
 
 async function onGenerateSubmit(form: Record<string, unknown>) {
@@ -234,7 +234,6 @@ async function saveShopConfig() {
   window.$message?.success($t('page.points.rechargeCards.shopConfigSaveSuccess'));
   shopConfigVisible.value = false;
 }
-
 </script>
 
 <template>
@@ -258,21 +257,21 @@ async function saveShopConfig() {
       "
     >
       <template #header-prefix>
-        <el-button type="primary" @click="formVisible = true">
+        <ElButton type="primary" @click="formVisible = true">
           {{ $t('page.points.rechargeCards.generate') }}
-        </el-button>
-        <el-button @click="openShopConfig">
+        </ElButton>
+        <ElButton @click="openShopConfig">
           {{ $t('page.points.rechargeCards.shopConfig') }}
-        </el-button>
-        <el-button :loading="exporting" @click="onExport">
+        </ElButton>
+        <ElButton :loading="exporting" @click="onExport">
           {{ $t('page.points.rechargeCards.export') }}
-        </el-button>
+        </ElButton>
       </template>
       <template #code="{ row }">
         <span class="code-cell">{{ row.code }}</span>
-        <el-button link type="primary" size="small" @click="copyCode(row.code)">
+        <ElButton link type="primary" size="small" @click="copyCode(row.code)">
           {{ $t('page.points.rechargeCards.copy') }}
-        </el-button>
+        </ElButton>
       </template>
       <template #status="{ row }">
         {{ statusLabel(row.status) }}
@@ -301,29 +300,29 @@ async function saveShopConfig() {
       :on-submit="onGenerateSubmit"
     />
 
-    <el-dialog
+    <ElDialog
       v-model="shopConfigVisible"
       :title="$t('page.points.rechargeCards.shopConfigTitle')"
       width="520px"
       :close-on-click-modal="false"
     >
-      <el-form v-loading="shopConfigLoading" label-width="96px" @submit.prevent="saveShopConfig">
-        <el-form-item :label="$t('page.points.rechargeCards.shopUrl')">
-          <el-input
+      <ElForm v-loading="shopConfigLoading" label-width="96px" @submit.prevent="saveShopConfig">
+        <ElFormItem :label="$t('page.points.rechargeCards.shopUrl')">
+          <ElInput
             v-model="shopUrlInput"
             :placeholder="$t('page.points.rechargeCards.shopUrlPlaceholder')"
             maxlength="2048"
             clearable
           />
-        </el-form-item>
-      </el-form>
+        </ElFormItem>
+      </ElForm>
       <template #footer>
-        <el-button @click="shopConfigVisible = false">{{ $t('common.cancel') }}</el-button>
-        <el-button type="primary" :loading="shopConfigSaving" @click="saveShopConfig">
+        <ElButton @click="shopConfigVisible = false">{{ $t('common.cancel') }}</ElButton>
+        <ElButton type="primary" :loading="shopConfigSaving" @click="saveShopConfig">
           {{ $t('common.confirm') }}
-        </el-button>
+        </ElButton>
       </template>
-    </el-dialog>
+    </ElDialog>
   </JQCustomPage>
 </template>
 

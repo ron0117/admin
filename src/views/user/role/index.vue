@@ -176,12 +176,10 @@ const handleFormSubmit = async (data: Record<string, string>) => {
 };
 
 const patchStatus = async (row: Api.Role.Item, status: Api.Role.Status) => {
-  const confirmText =
-    status === 'disabled'
-      ? row.isDefault
-        ? $t('page.manage.role.confirmDisableDefault')
-        : $t('page.manage.role.confirmDisable')
-      : $t('page.manage.role.confirmEnable');
+  let confirmText = $t('page.manage.role.confirmEnable');
+  if (status === 'disabled') {
+    confirmText = row.isDefault ? $t('page.manage.role.confirmDisableDefault') : $t('page.manage.role.confirmDisable');
+  }
   try {
     await ElMessageBox.confirm(confirmText, $t('common.tip'), {
       confirmButtonText: $t('common.confirm'),
@@ -317,13 +315,7 @@ onMounted(() => {
         <ElButton type="primary" plain size="small" @click="openMenus(roleRow(row))">
           {{ $t('page.manage.role.configureMenus') }}
         </ElButton>
-        <ElButton
-          v-if="row.isDefault"
-          type="warning"
-          plain
-          size="small"
-          @click="clearDefault"
-        >
+        <ElButton v-if="row.isDefault" type="warning" plain size="small" @click="clearDefault">
           {{ $t('page.manage.role.clearDefault') }}
         </ElButton>
         <ElButton

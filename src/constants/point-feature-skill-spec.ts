@@ -15,7 +15,7 @@ export type MenuSkillSpec = {
 export const MENU_SKILL_SPECS: MenuSkillSpec[] = [
   {
     menuCode: 'generate.create.inspire',
-    hint: '单段【generate】；正文用 ${变量}，下方列表为客户端自动填入项。',
+    hint: `单段【generate】；正文用 ${'$'}{变量}，下方列表为客户端自动填入项。`,
     sections: [
       {
         key: 'generate',
@@ -48,7 +48,7 @@ export const MENU_SKILL_SPECS: MenuSkillSpec[] = [
   },
   {
     menuCode: 'generate.create.free',
-    hint: '单段【generate】；通常正文为 ${userPrompt}。',
+    hint: `单段【generate】；通常正文为 ${'$'}{userPrompt}。`,
     sections: [{ key: 'generate', title: '生图', params: [{ key: 'userPrompt', label: '用户创意描述' }] }]
   },
   {

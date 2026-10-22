@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import type { FormItem } from '@/components';
 import { JQCustomPage, JQDataTable, JQSearch } from '@/components';
 import { fetchAdminUserList, fetchRechargeOrders } from '@/service/api';
-import { $t } from '@/locales';
 import { getCurrentMonthDatetimeRange, parseSearchTimeRange } from '@/utils/time';
+import { $t } from '@/locales';
 
 const [defaultFrom, defaultTo] = getCurrentMonthDatetimeRange();
 
@@ -130,7 +130,7 @@ function onSearch(form: Record<string, unknown>) {
   query.from = range.from;
   query.to = range.to;
   pagination.currentPage = 1;
-  void load();
+  load();
 }
 </script>
 

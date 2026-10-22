@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import { skillHintForMenu } from '@/constants/point-feature-skill-hint';
+import { skillSpecForMenu } from '@/constants/point-feature-skill-spec';
 import type { FormItem } from '@/components';
 import { JQCustomPage, JQDataTable, JQDialogForm } from '@/components';
 import { fetchPatchPointFeature, fetchPointFeatures } from '@/service/api';
-import { skillHintForMenu } from '@/constants/point-feature-skill-hint';
-import { skillSpecForMenu } from '@/constants/point-feature-skill-spec';
 import { stripSkillPromptParamLabels } from '@/utils/skill-prompt-strip';
 import { $t } from '@/locales';
 
@@ -18,9 +18,7 @@ const rows = ref<Api.Points.Feature[]>([]);
 const formVisible = ref(false);
 const editing = ref<Api.Points.Feature | null>(null);
 
-const editingSkillSpec = computed(() =>
-  editing.value ? skillSpecForMenu(editing.value.menuCode) : undefined
-);
+const editingSkillSpec = computed(() => (editing.value ? skillSpecForMenu(editing.value.menuCode) : undefined));
 
 const skillTextareaRows = computed(() => {
   const code = editing.value?.menuCode;
@@ -264,11 +262,7 @@ onMounted(() => {
           <div v-if="editingSkillSpec" class="skill-param-panel">
             <p class="skill-param-panel__title">{{ $t('page.points.settings.skillParamTitle') }}</p>
             <p class="skill-param-panel__hint">{{ $t('page.points.settings.skillParamHint') }}</p>
-            <div
-              v-for="section in editingSkillSpec.sections"
-              :key="section.key"
-              class="skill-param-section"
-            >
+            <div v-for="section in editingSkillSpec.sections" :key="section.key" class="skill-param-section">
               <p v-if="editingSkillSpec.sections.length > 1" class="skill-param-section__head">
                 【{{ section.key }}】{{ section.title }}
               </p>

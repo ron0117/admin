@@ -3,8 +3,8 @@ import { computed, reactive, ref } from 'vue';
 import type { FormItem } from '@/components';
 import { JQCustomPage, JQDataTable, JQSearch } from '@/components';
 import { fetchPointLedgers } from '@/service/api';
-import { $t } from '@/locales';
 import { getCurrentMonthDatetimeRange, parseSearchTimeRange } from '@/utils/time';
+import { $t } from '@/locales';
 
 const [defaultFrom, defaultTo] = getCurrentMonthDatetimeRange();
 
@@ -217,7 +217,6 @@ const copyRequestId = async (id: string) => {
     window.$message?.error($t('page.points.records.copyFailed'));
   }
 };
-
 </script>
 
 <template>
