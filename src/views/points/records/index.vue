@@ -143,6 +143,7 @@ const menuName = (menuCode: string | null) => {
 const specLabel = (row: Api.Points.Ledger) => {
   if (!row.specKey) return '';
   if (row.menuCode === LIVE_MENU) {
+    if (row.specKey === 'local') return $t('page.points.settings.unitLocal');
     if (row.specKey === 'high') return $t('page.points.settings.unitHigh');
     if (row.specKey === 'medium') return $t('page.points.settings.unitMedium');
     if (row.specKey === 'good') return $t('page.points.settings.unitGood');

@@ -6,6 +6,7 @@ import type { FormItem } from '@/components';
 import { JQCustomPage, JQDataTable, JQDialogForm } from '@/components';
 import { fetchPatchPointFeature, fetchPointFeatures } from '@/service/api';
 import { stripSkillPromptParamLabels } from '@/utils/skill-prompt-strip';
+import { pointPricesPayload } from '@/utils/point-pricing';
 import { $t } from '@/locales';
 
 defineOptions({ name: 'PointsSettings' });
@@ -88,6 +89,9 @@ const formItems = computed<FormItem[]>(() => {
     },
     ...(isLive
       ? [
+          ...(editing.value?.specs.some(spec => spec.specKey === 'local')
+            ? [numberItem('unitLocal', $t('page.points.settings.unitLocal'))]
+            : []),
           numberItem('unitHigh', $t('page.points.settings.unitHigh')),
           numberItem('unitMedium', $t('page.points.settings.unitMedium')),
           numberItem('unitGood', $t('page.points.settings.unitGood'))
@@ -116,6 +120,7 @@ const formInitial = computed(() => {
       name: '',
       menuCode: '',
       unitPoints: 0,
+      unitLocal: 0,
       unitHigh: 0,
       unitMedium: 0,
       unitGood: 0,
@@ -128,6 +133,7 @@ const formInitial = computed(() => {
     name: row.name,
     menuCode: row.menuCode,
     unitPoints: byKey('default'),
+    unitLocal: byKey('local'),
     unitHigh: byKey('high'),
     unitMedium: byKey('medium'),
     unitGood: byKey('good'),
@@ -141,7 +147,9 @@ const specsSummary = (row: Api.Points.Feature) => {
   if (high) {
     const medium = row.specs.find(spec => spec.specKey === 'medium');
     const good = row.specs.find(spec => spec.specKey === 'good');
-    return $t('page.points.settings.liveSummary', {
+    const local = row.specs.find(spec => spec.specKey === 'local');
+    const localSummary = local ? `${$t('page.points.settings.unitLocal')} ${local.unitPoints} / ` : '';
+    return localSummary + $t('page.points.settings.liveSummary', {
       high: high.unitPoints,
       medium: medium?.unitPoints ?? 0,
       good: good?.unitPoints ?? 0
@@ -181,15 +189,8 @@ const handleFormSubmit = async (data: Record<string, unknown>) => {
   if (!editing.value) {
     return;
   }
-  const isLive = editing.value.menuCode === LIVE_MENU;
   const isCopywrite = editing.value.menuCode === COPYWRITE_MENU;
-  const specs = isLive
-    ? [
-        { specKey: 'high', unitPoints: Number(data.unitHigh) },
-        { specKey: 'medium', unitPoints: Number(data.unitMedium) },
-        { specKey: 'good', unitPoints: Number(data.unitGood) }
-      ]
-    : [{ specKey: 'default', unitPoints: Number(data.unitPoints) }];
+  const specs = pointPricesPayload(editing.value.specs, data);
   const remark = String(data.remark ?? '');
   const payload: Api.Points.PatchFeatureReq = { remark, specs };
   if (!isCopywrite) {
