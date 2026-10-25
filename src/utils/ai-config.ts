@@ -2,6 +2,7 @@ export const AI_PROTOCOLS = [
   { value: 'chat-completions', label: '图文理解 / 对话（Chat Completions）' },
   { value: 'responses-image', label: '生图（Responses）' },
   { value: 'images-edit', label: '生图 / 编辑（Images REST）' },
+  { value: 'metaso-h3-video', label: 'LIVE 视频（Metaso MiniMax-H3）' },
   { value: 'wan-video', label: 'LIVE 视频（Wan）' }
 ] as const;
 
@@ -32,7 +33,7 @@ export const AI_STAGES = [
     vision: true
   },
   { value: 'live.motion', module: 'LIVE 创作', label: '动作提示词', protocols: ['chat-completions'], vision: true },
-  { value: 'live.generate', module: 'LIVE 创作', label: '生成动态图片', protocols: ['wan-video'], vision: false }
+  { value: 'live.generate', module: 'LIVE 创作', label: '生成动态图片', protocols: ['wan-video', 'metaso-h3-video'], vision: false }
 ] as const;
 
 export type AiStage = (typeof AI_STAGES)[number]['value'];

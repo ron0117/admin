@@ -51,3 +51,13 @@ test('image and copy prices are accepted, but missing, negative and fractional p
     assert.throws(() => pointPricesPayload([{ specKey: 'local', unitPoints: 1 }], { unitLocal }));
   }
 });
+
+test('H3 tiers save 50/75/85 and preserve legacy specs when not edited', () => {
+  assert.deepEqual(pointPricesPayload([
+    { specKey: 'local', unitPoints: 1 }, { specKey: '768p', unitPoints: 0 },
+    { specKey: '1080p', unitPoints: 0 }, { specKey: '2k', unitPoints: 0 }, { specKey: 'high', unitPoints: 100 }
+  ], { unitLocal: 1, unit768p: 50, unit1080p: 75, unit2k: 85 }), [
+    { specKey: 'local', unitPoints: 1 }, { specKey: '768p', unitPoints: 50 },
+    { specKey: '1080p', unitPoints: 75 }, { specKey: '2k', unitPoints: 85 }, { specKey: 'high', unitPoints: 100 }
+  ]);
+});
