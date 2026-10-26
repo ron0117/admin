@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import type { Component } from 'vue';
 import { getPaletteColorByNumber, mixColor } from '@sa/color';
 import { loginModuleRecord } from '@/constants/app';
+import { BEIAN_MIIT_URL, ICP_RECORD_NUMBER } from '@/constants/legal';
 import { useAppStore } from '@/store/modules/app';
 import { useThemeStore } from '@/store/modules/theme';
 import { $t } from '@/locales';
@@ -78,7 +79,34 @@ const bgColor = computed(() => {
         </main>
       </div>
     </ElCard>
+    <footer class="login-beian">
+      <a :href="BEIAN_MIIT_URL" target="_blank" rel="noopener noreferrer">{{ ICP_RECORD_NUMBER }}</a>
+    </footer>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.login-beian {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  z-index: 4;
+  width: 100%;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.login-beian a {
+  color: rgb(0 0 0 / 55%);
+  text-decoration: none;
+}
+
+.login-beian a:hover {
+  text-decoration: underline;
+}
+
+:global(html.dark) .login-beian a {
+  color: rgb(255 255 255 / 65%);
+}
+</style>
