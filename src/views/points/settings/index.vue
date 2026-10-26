@@ -6,6 +6,7 @@ import type { FormItem } from '@/components';
 import { JQCustomPage, JQDataTable, JQDialogForm } from '@/components';
 import { fetchPatchPointFeature, fetchPointFeatures } from '@/service/api';
 import { stripSkillPromptParamLabels } from '@/utils/skill-prompt-strip';
+import { pointPricesPayload } from '@/utils/point-pricing';
 import { $t } from '@/locales';
 
 defineOptions({ name: 'PointsSettings' });
@@ -88,9 +89,20 @@ const formItems = computed<FormItem[]>(() => {
     },
     ...(isLive
       ? [
-          numberItem('unitHigh', $t('page.points.settings.unitHigh')),
-          numberItem('unitMedium', $t('page.points.settings.unitMedium')),
-          numberItem('unitGood', $t('page.points.settings.unitGood'))
+          ...(editing.value?.specs.some(spec => spec.specKey === 'local')
+            ? [numberItem('unitLocal', $t('page.points.settings.unitLocal'))]
+            : []),
+          ...(editing.value?.specs.some(spec => spec.specKey === '768p')
+            ? [
+                numberItem('unit768p', 'AI 动态 · 768P'),
+                numberItem('unit1080p', 'AI 动态 · 1080P'),
+                numberItem('unit2k', 'AI 动态 · 2K')
+              ]
+            : [
+                numberItem('unitHigh', $t('page.points.settings.unitHigh')),
+                numberItem('unitMedium', $t('page.points.settings.unitMedium')),
+                numberItem('unitGood', $t('page.points.settings.unitGood'))
+              ])
         ]
       : [numberItem('unitPoints', $t('page.points.settings.unitPoints'))]),
     ...(isCopywrite
@@ -116,6 +128,7 @@ const formInitial = computed(() => {
       name: '',
       menuCode: '',
       unitPoints: 0,
+      unitLocal: 0,
       unitHigh: 0,
       unitMedium: 0,
       unitGood: 0,
@@ -127,7 +140,11 @@ const formInitial = computed(() => {
   return {
     name: row.name,
     menuCode: row.menuCode,
+    unit768p: byKey('768p'),
+    unit1080p: byKey('1080p'),
+    unit2k: byKey('2k'),
     unitPoints: byKey('default'),
+    unitLocal: byKey('local'),
     unitHigh: byKey('high'),
     unitMedium: byKey('medium'),
     unitGood: byKey('good'),
@@ -137,11 +154,19 @@ const formInitial = computed(() => {
 });
 
 const specsSummary = (row: Api.Points.Feature) => {
+  if (row.specs.some(spec => spec.specKey === '768p')) {
+    return row.specs
+      .filter(spec => ['local', '768p', '1080p', '2k'].includes(spec.specKey))
+      .map(spec => `${spec.specLabel} ${spec.unitPoints}`)
+      .join(' / ');
+  }
   const high = row.specs.find(spec => spec.specKey === 'high');
   if (high) {
     const medium = row.specs.find(spec => spec.specKey === 'medium');
     const good = row.specs.find(spec => spec.specKey === 'good');
-    return $t('page.points.settings.liveSummary', {
+    const local = row.specs.find(spec => spec.specKey === 'local');
+    const localSummary = local ? `${$t('page.points.settings.unitLocal')} ${local.unitPoints} / ` : '';
+    return localSummary + $t('page.points.settings.liveSummary', {
       high: high.unitPoints,
       medium: medium?.unitPoints ?? 0,
       good: good?.unitPoints ?? 0
@@ -181,15 +206,8 @@ const handleFormSubmit = async (data: Record<string, unknown>) => {
   if (!editing.value) {
     return;
   }
-  const isLive = editing.value.menuCode === LIVE_MENU;
   const isCopywrite = editing.value.menuCode === COPYWRITE_MENU;
-  const specs = isLive
-    ? [
-        { specKey: 'high', unitPoints: Number(data.unitHigh) },
-        { specKey: 'medium', unitPoints: Number(data.unitMedium) },
-        { specKey: 'good', unitPoints: Number(data.unitGood) }
-      ]
-    : [{ specKey: 'default', unitPoints: Number(data.unitPoints) }];
+  const specs = pointPricesPayload(editing.value.specs, data);
   const remark = String(data.remark ?? '');
   const payload: Api.Points.PatchFeatureReq = { remark, specs };
   if (!isCopywrite) {

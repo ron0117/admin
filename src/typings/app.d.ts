@@ -814,6 +814,7 @@ declare namespace App {
             updatedAt: string;
             editTitle: string;
             unitPoints: string;
+            unitLocal: string;
             unitHigh: string;
             unitMedium: string;
             unitGood: string;

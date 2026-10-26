@@ -44,6 +44,7 @@
     "preview": "vite preview",
     "release": "sa release",
     "test:ai-config": "tsx --test tests/ai-config.test.ts",
+    "test:point-pricing": "tsx --test tests/point-pricing.test.ts",
     "typecheck": "vue-tsc --noEmit --skipLibCheck",
     "update-pkg": "sa update-pkg"
   },
