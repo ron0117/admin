@@ -294,6 +294,7 @@ const local: App.I18n.Schema = {
   },
   route: {
     'ai-config': '模型服务',
+    'proxy-models': '当前模型',
     login: '登录',
     403: '无权限',
     404: '页面不存在',

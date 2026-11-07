@@ -294,6 +294,7 @@ const local: App.I18n.Schema = {
   },
   route: {
     'ai-config': 'Model Services',
+    'proxy-models': 'Current Models',
     login: 'Login',
     403: 'No Permission',
     404: 'Page Not Found',

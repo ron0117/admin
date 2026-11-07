@@ -28,6 +28,7 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   points_recharge_records: () => import("@/views/points/recharge/records/index.vue"),
   points_records: () => import("@/views/points/records/index.vue"),
   points_settings: () => import("@/views/points/settings/index.vue"),
+  "proxy-models": () => import("@/views/proxy-models/index.vue"),
   user_list: () => import("@/views/user/list/index.vue"),
   user_role: () => import("@/views/user/role/index.vue"),
 };

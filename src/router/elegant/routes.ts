@@ -186,6 +186,17 @@ export const generatedRoutes: GeneratedRoute[] = [
     ]
   },
   {
+    name: 'proxy-models',
+    path: '/proxy-models',
+    component: 'layout.base$view.proxy-models',
+    meta: {
+      title: 'proxy-models',
+      i18nKey: 'route.proxy-models',
+      icon: 'mdi:robot-outline',
+      order: 6
+    }
+  },
+  {
     name: 'user',
     path: '/user',
     component: 'layout.base',

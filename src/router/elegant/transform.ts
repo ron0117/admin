@@ -193,6 +193,7 @@ const routeMap: RouteMap = {
   "points_recharge_records": "/points/recharge/records",
   "points_records": "/points/records",
   "points_settings": "/points/settings",
+  "proxy-models": "/proxy-models",
   "user": "/user",
   "user_list": "/user/list",
   "user_role": "/user/role"
