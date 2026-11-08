@@ -18,9 +18,11 @@ Live 合成继续取前 3 秒、静音、30 fps；移除视频长边 1440 的统
 
 ## 三个仓库
 
+本次改动统一使用 lin/2026-11-08-batch-image-update 分支。三个仓库分别拉取此同名分支；客户端已包含前面验证过的全部改动，以及本次 Live 档位、积分和原图封面更新。
+
 - [桌面端：lin/2026-11-08-batch-image-update](https://github.com/ron0117/electron/tree/lin/2026-11-08-batch-image-update)
-- [服务端：lin/2026-11-08-live-quality-pricing](https://github.com/ron0117/nestjs/tree/lin/2026-11-08-live-quality-pricing)
-- [管理端：lin/2026-11-08-live-quality-pricing](https://github.com/ron0117/admin/tree/lin/2026-11-08-live-quality-pricing)
+- [服务端：lin/2026-11-08-batch-image-update](https://github.com/ron0117/nestjs/tree/lin/2026-11-08-batch-image-update)
+- [管理端：lin/2026-11-08-batch-image-update](https://github.com/ron0117/admin/tree/lin/2026-11-08-batch-image-update)
 
 服务端基于 `efc210f`，管理端基于 `51301de`，均包含本次拉取时的线上主分支。桌面端延续已经验证的本地分支，包含原图封面和批量 Live 上传。
 
@@ -42,6 +44,13 @@ Live 合成继续取前 3 秒、静音、30 fps；移除视频长边 1440 的统
 
 验证覆盖：三档真实成片；使用这些成片与全分辨率原图合成 Live，核对原图封面尺寸、视频尺寸、照片视频配对标识、相机参数和压缩包；三档客户端路由与预扣计费；服务端参数映射、幂等提交、旧任务恢复、原价退款；真实 PostgreSQL 兼容迁移执行和回滚。
 
+## 同批追加：多图生成 Live
+
+- 图片裂变结果区也提供“批量生成 Live”：将勾选的成功图片带入同一个 Live 草稿，失败占位不参与。跳转不会自动生成或扣分。
+- Live 输入区支持一次上传多张本地 JPG / PNG / WebP 原图，也支持从素材库一次添加多张；可继续添加、逐张勾选、全选、取消全选和移除。
+- 总价按勾选数量与当前后台档位价格计算。每张选中原图对应一条独立 Live 请求，保留其原图作为高清封面；本地动效与 AI 动态均支持。
+- 当前勾选随任务保存。旧的单图、批量任务默认保留原有图片的选择；取消勾选或移除输入不会删除已生成的结果，失败重试仍使用该条原来的图片和参数。
+- 验收：63 项定向测试；真实渲染器离线验证裂变结果多选跳转、本地与素材库多图添加、勾选后的总价、重启恢复以及每张原图独立提交。验收不连接真实模型，不产生额外积分消耗。
 ## 技术部署顺序
 
 1. 合并服务端分支，先备份数据库及当前价格。在已有数据库环境变量的服务端 `apps/nest-api` 目录执行：
