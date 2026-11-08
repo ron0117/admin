@@ -1,6 +1,7 @@
 type Spec = { specKey: string; unitPoints: number };
 
 export const POINT_SPEC_FIELDS: Record<string, string> = {
+  '480p': 'unit480p',
   '768p': 'unit768p',
   '1080p': 'unit1080p',
   '2k': 'unit2k',

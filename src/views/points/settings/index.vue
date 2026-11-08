@@ -94,9 +94,11 @@ const formItems = computed<FormItem[]>(() => {
             : []),
           ...(editing.value?.specs.some(spec => spec.specKey === '768p')
             ? [
-                numberItem('unit768p', 'AI 动态 · 768P'),
-                numberItem('unit1080p', 'AI 动态 · 1080P'),
-                numberItem('unit2k', 'AI 动态 · 2K')
+                ...(editing.value?.specs.some(spec => spec.specKey === '480p')
+                  ? [numberItem('unit480p', 'AI 动态 · 低 · 480P')]
+                  : [numberItem('unit1080p', 'AI 动态 · 1080P（旧版）')]),
+                numberItem('unit768p', 'AI 动态 · 中 · 768P'),
+                numberItem('unit2k', 'AI 动态 · 高 · 2K')
               ]
             : [
                 numberItem('unitHigh', $t('page.points.settings.unitHigh')),
@@ -140,6 +142,7 @@ const formInitial = computed(() => {
   return {
     name: row.name,
     menuCode: row.menuCode,
+    unit480p: byKey('480p'),
     unit768p: byKey('768p'),
     unit1080p: byKey('1080p'),
     unit2k: byKey('2k'),
@@ -156,7 +159,9 @@ const formInitial = computed(() => {
 const specsSummary = (row: Api.Points.Feature) => {
   if (row.specs.some(spec => spec.specKey === '768p')) {
     return row.specs
-      .filter(spec => ['local', '768p', '1080p', '2k'].includes(spec.specKey))
+      .filter(spec => (row.specs.some(s => s.specKey === '480p')
+        ? ['local', '480p', '768p', '2k']
+        : ['local', '768p', '1080p', '2k']).includes(spec.specKey))
       .map(spec => `${spec.specLabel} ${spec.unitPoints}`)
       .join(' / ');
   }
