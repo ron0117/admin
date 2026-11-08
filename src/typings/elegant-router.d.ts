@@ -38,6 +38,7 @@ declare module "@elegant-router/types" {
     "demo": "/demo";
     "home": "/home";
     "login": "/login/:module(pwd-login)?";
+    "logs": "/logs";
     "manage": "/manage";
     "manage_admin": "/manage/admin";
     "points": "/points";
@@ -103,6 +104,7 @@ declare module "@elegant-router/types" {
     | "demo"
     | "home"
     | "login"
+    | "logs"
     | "manage"
     | "points"
     | "proxy-models"
@@ -132,6 +134,7 @@ declare module "@elegant-router/types" {
     | "ai-config"
     | "demo"
     | "home"
+    | "logs"
     | "manage_admin"
     | "points_recharge_cards"
     | "points_recharge_packages"

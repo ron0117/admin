@@ -184,6 +184,7 @@ const routeMap: RouteMap = {
   "demo": "/demo",
   "home": "/home",
   "login": "/login/:module(pwd-login)?",
+  "logs": "/logs",
   "manage": "/manage",
   "manage_admin": "/manage/admin",
   "points": "/points",

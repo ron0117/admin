@@ -803,6 +803,37 @@ declare namespace App {
             };
           };
         };
+        logs: {
+          title: string;
+          retentionHint: string;
+          time: string;
+          level: string;
+          keyword: string;
+          keywordPlaceholder: string;
+          requestId: string;
+          clientVersion: string;
+          message: string;
+          channel: string;
+          payload: string;
+          detail: string;
+          rangeRequired: string;
+          rangeTooLong: string;
+          unavailableDisabled: string;
+          unavailableDown: string;
+          channelAll: string;
+          channelHttp: string;
+          channelBusiness: string;
+          channelError: string;
+          channelDatabase: string;
+          channelSecurity: string;
+          channelNone: string;
+          levelTrace: string;
+          levelDebug: string;
+          levelInfo: string;
+          levelWarn: string;
+          levelError: string;
+          levelFatal: string;
+        };
         points: {
           settings: {
             title: string;

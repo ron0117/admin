@@ -408,7 +408,7 @@ onBeforeUnmount(() => {
           <p class="field-hint">
             <template v-if="editing.protocol === 'metaso-h3-video'">
               填写 https://metaso.cn/api/minimax/v2；模型 MiniMax-H3。密钥仅保留在服务端。
-              普通通道、4 秒，支持 768P / 1080P / 2K；请同时检查积分设置。
+              普通通道、4 秒，支持 480P / 1080P / 2K；请同时检查积分设置。
             </template>
             <template v-else-if="editing.protocol === 'wan-video'">
               Wan 视频填写供应商 API 根地址，不追加 /v1 或具体调用路径。

@@ -86,6 +86,17 @@ export const generatedRoutes: GeneratedRoute[] = [
     }
   },
   {
+    name: 'logs',
+    path: '/logs',
+    component: 'layout.base$view.logs',
+    meta: {
+      title: 'logs',
+      i18nKey: 'route.logs',
+      icon: 'mdi:text-box-search-outline',
+      order: 7
+    }
+  },
+  {
     name: 'manage',
     path: '/manage',
     component: 'layout.base',

@@ -22,6 +22,7 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   "ai-config": () => import("@/views/ai-config/index.vue"),
   demo: () => import("@/views/demo/index.vue"),
   home: () => import("@/views/home/index.vue"),
+  logs: () => import("@/views/logs/index.vue"),
   manage_admin: () => import("@/views/manage/admin/index.vue"),
   points_recharge_cards: () => import("@/views/points/recharge/cards/index.vue"),
   points_recharge_packages: () => import("@/views/points/recharge/packages/index.vue"),

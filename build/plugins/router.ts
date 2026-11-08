@@ -55,6 +55,7 @@ export function setupElegantRouter() {
         home: { icon: 'mdi:monitor-dashboard', order: 1 },
         'ai-config': { icon: 'mdi:connection', order: 5 },
         'proxy-models': { icon: 'mdi:robot-outline', order: 6 },
+        logs: { icon: 'mdi:text-box-search-outline', order: 7 },
         demo: { icon: 'mdi:flask-outline', order: 99, hideInMenu: true },
         manage: { icon: 'mdi:shield-account-outline', order: 2 },
         manage_admin: { icon: 'mdi:account-tie-outline', order: 1 },
