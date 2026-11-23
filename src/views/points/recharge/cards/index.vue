@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
+import PhotoDurationCards from './PhotoDurationCards.vue';
 import type { FormItem } from '@/components';
 import { JQCustomPage, JQDataTable, JQDialogForm, JQSearch } from '@/components';
 import {
@@ -18,6 +19,7 @@ const [defaultFrom, defaultTo] = getCurrentMonthDatetimeRange();
 
 defineOptions({ name: 'PointsRechargeCards' });
 
+const activeTab = ref('points');
 const loading = ref(false);
 const exporting = ref(false);
 const rows = ref<Api.Recharge.Card[]>([]);
@@ -238,6 +240,12 @@ async function saveShopConfig() {
 
 <template>
   <JQCustomPage>
+    <ElTabs v-model="activeTab">
+      <ElTabPane label="积分卡" name="points" />
+      <ElTabPane label="洗图时长卡" name="photo" />
+    </ElTabs>
+    <PhotoDurationCards v-if="activeTab === 'photo'" />
+    <template v-else>
     <JQSearch :form-items="searchItems" @search="onSearch" />
     <JQDataTable
       :columns="columns"
@@ -323,6 +331,7 @@ async function saveShopConfig() {
         </ElButton>
       </template>
     </ElDialog>
+    </template>
   </JQCustomPage>
 </template>
 
