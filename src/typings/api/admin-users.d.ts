@@ -16,6 +16,7 @@ declare namespace Api {
       createdAt: string;
       updatedAt: string;
       points: number;
+      photoExpiresAt: string | null;
       roles: RoleRef[];
     }
 

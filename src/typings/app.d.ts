@@ -965,12 +965,16 @@ declare namespace App {
           user: {
             points: string;
             adjust: string;
+            duration: string;
+            durationAdjust: string;
             direction: string;
             increase: string;
             decrease: string;
             amount: string;
+            days: string;
             remark: string;
             amountInvalid: string;
+            daysInvalid: string;
             remarkRequired: string;
           };
         };

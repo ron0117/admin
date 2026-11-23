@@ -9,6 +9,7 @@ export type NestElectronUser = {
   createdAt: string;
   updatedAt: string;
   points: number;
+  photoExpiresAt: string | null;
   roles: Array<{ id: string; name: string }>;
 };
 
@@ -72,6 +73,17 @@ export function fetchResetAdminUserPassword(id: string, password: string) {
 export function fetchAdjustAdminUserPoints(id: string, data: Api.Points.AdjustReq) {
   return nestRequest<Api.Points.AdjustResp>({
     url: `/admin/users/${id}/points`,
+    method: 'post',
+    data
+  });
+}
+
+export function fetchAdjustAdminUserPhotoDuration(
+  id: string,
+  data: { direction: 'increase' | 'decrease'; days: number; remark: string }
+) {
+  return nestRequest<AdminUser>({
+    url: `/admin/users/${id}/photo-duration`,
     method: 'post',
     data
   });

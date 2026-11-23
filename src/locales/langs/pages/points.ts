@@ -131,12 +131,16 @@ const points_cn: App.I18n.Schema['page']['points'] = {
   user: {
     points: '积分',
     adjust: '调整积分',
+    duration: '洗图到期',
+    durationAdjust: '调整时长',
     direction: '方向',
     increase: '增加',
     decrease: '减少',
     amount: '数量',
+    days: '天数',
     remark: '备注',
     amountInvalid: '请输入大于 0 的整数',
+    daysInvalid: '请输入大于 0 的整数天数',
     remarkRequired: '请填写调账备注'
   }
 };
@@ -272,12 +276,16 @@ const points_tw: App.I18n.Schema['page']['points'] = {
   user: {
     points: '積分',
     adjust: '調整積分',
+    duration: '洗圖到期',
+    durationAdjust: '調整時長',
     direction: '方向',
     increase: '增加',
     decrease: '減少',
     amount: '數量',
+    days: '天數',
     remark: '備註',
     amountInvalid: '請輸入大於 0 的整數',
+    daysInvalid: '請輸入大於 0 的整數天數',
     remarkRequired: '請填寫調帳備註'
   }
 };
@@ -413,12 +421,16 @@ const points_us: App.I18n.Schema['page']['points'] = {
   user: {
     points: 'Points',
     adjust: 'Adjust points',
+    duration: 'Photo expiry',
+    durationAdjust: 'Adjust duration',
     direction: 'Direction',
     increase: 'Increase',
     decrease: 'Decrease',
     amount: 'Amount',
+    days: 'Days',
     remark: 'Remark',
     amountInvalid: 'Enter an integer greater than 0',
+    daysInvalid: 'Enter a whole number of days greater than 0',
     remarkRequired: 'Remark is required'
   }
 };

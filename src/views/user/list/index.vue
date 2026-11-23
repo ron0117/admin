@@ -4,6 +4,7 @@ import { ElMessageBox } from 'element-plus';
 import type { FormItem } from '@/components';
 import { JQCustomPage, JQDataTable, JQDialogForm, JQSearch } from '@/components';
 import {
+  fetchAdjustAdminUserPhotoDuration,
   fetchAdjustAdminUserPoints,
   fetchAdminUserList,
   fetchCreateAdminUser,
@@ -11,6 +12,7 @@ import {
   fetchRoleList,
   fetchUpdateAdminUser
 } from '@/service/api';
+import { formatTime } from '@/utils';
 import { $t } from '@/locales';
 
 defineOptions({ name: 'ManageUser' });
@@ -42,6 +44,8 @@ const resetVisible = ref(false);
 const resetTarget = ref<Api.AdminUser.Item | null>(null);
 const adjustVisible = ref(false);
 const adjustTarget = ref<Api.AdminUser.Item | null>(null);
+const durationVisible = ref(false);
+const durationTarget = ref<Api.AdminUser.Item | null>(null);
 
 const statusOptions = computed(() => [
   { label: $t('page.manage.user.statusPending'), value: 'pending_verification' },
@@ -160,14 +164,54 @@ const adjustFormItems = computed<FormItem[]>(() => [
   }
 ]);
 
+const durationFormItems = computed<FormItem[]>(() => [
+  {
+    prop: 'direction',
+    label: $t('page.points.user.direction'),
+    type: 'radio',
+    span: 2,
+    options: [
+      { label: $t('page.points.user.increase'), value: 'increase' },
+      { label: $t('page.points.user.decrease'), value: 'decrease' }
+    ],
+    rules: [{ required: true, message: $t('form.required'), trigger: 'change' }]
+  },
+  {
+    prop: 'days',
+    label: $t('page.points.user.days'),
+    type: 'number',
+    span: 2,
+    componentProps: { min: 1, max: 36500, step: 1, precision: 0 },
+    rules: [
+      {
+        required: true,
+        type: 'integer',
+        min: 1,
+        max: 36500,
+        message: $t('page.points.user.daysInvalid'),
+        trigger: 'blur'
+      }
+    ]
+  },
+  {
+    prop: 'remark',
+    label: $t('page.points.user.remark'),
+    type: 'textarea',
+    span: 2,
+    componentProps: { maxlength: 200, showWordLimit: true, rows: 3 },
+    rules: [{ required: true, message: $t('page.points.user.remarkRequired'), trigger: 'blur' }]
+  }
+]);
+
 const columns = computed(() => [
   { prop: 'email', label: $t('page.manage.user.userEmail'), minWidth: 200 },
   { prop: 'username', label: $t('page.manage.user.userName'), minWidth: 120 },
   { prop: 'roles', label: $t('page.manage.user.userRole'), minWidth: 180, slot: 'roles' },
   { prop: 'status', label: $t('page.manage.user.userStatus'), minWidth: 120, slot: 'status' },
   { prop: 'points', label: $t('page.points.user.points'), minWidth: 90 },
+  { prop: 'photoExpiresAt', label: $t('page.points.user.duration'), minWidth: 170, slot: 'photoExpiresAt' },
   { prop: 'createdAt', label: $t('page.manage.user.createdAt'), minWidth: 170, formatTime: true },
-  { prop: 'actions', label: $t('common.operate'), minWidth: 360, slot: 'actions', fixed: 'right' }
+  { prop: 'actions', label: $t('common.operate'), minWidth: 460, slot: 'actions', fixed: 'right' }
 ]);
 
 const formTitle = computed(() =>
@@ -240,6 +284,11 @@ const openAdjust = (row: Api.AdminUser.Item) => {
   adjustVisible.value = true;
 };
 
+const openDuration = (row: Api.AdminUser.Item) => {
+  durationTarget.value = row;
+  durationVisible.value = true;
+};
+
 const handleFormSubmit = async (data: Record<string, unknown>) => {
   const email = String(data.email || '');
   const username = String(data.username || '');
@@ -300,6 +349,23 @@ const handleAdjustSubmit = async (data: Record<string, unknown>) => {
   }
   window.$message?.success($t('common.updateSuccess'));
   adjustVisible.value = false;
+  await loadList();
+};
+
+const handleDurationSubmit = async (data: Record<string, unknown>) => {
+  if (!durationTarget.value) {
+    return;
+  }
+  const { error } = await fetchAdjustAdminUserPhotoDuration(durationTarget.value.id, {
+    direction: data.direction === 'decrease' ? 'decrease' : 'increase',
+    days: Number(data.days),
+    remark: String(data.remark || '').trim()
+  });
+  if (error) {
+    return;
+  }
+  window.$message?.success($t('common.updateSuccess'));
+  durationVisible.value = false;
   await loadList();
 };
 
@@ -376,6 +442,9 @@ onMounted(() => {
       <template #roles="{ row }">
         {{ rolesText(userRow(row)) }}
       </template>
+      <template #photoExpiresAt="{ row }">
+        {{ formatTime(userRow(row).photoExpiresAt) || '—' }}
+      </template>
       <template #status="{ row }">
         <ElTag :type="row.status === 'active' ? 'success' : row.status === 'disabled' ? 'danger' : 'warning'">
           {{ statusLabel(row.status) }}
@@ -385,6 +454,9 @@ onMounted(() => {
         <ElButton type="primary" plain size="small" @click="openEdit(userRow(row))">{{ $t('common.edit') }}</ElButton>
         <ElButton type="primary" plain size="small" @click="openAdjust(userRow(row))">
           {{ $t('page.points.user.adjust') }}
+        </ElButton>
+        <ElButton type="primary" plain size="small" @click="openDuration(userRow(row))">
+          {{ $t('page.points.user.durationAdjust') }}
         </ElButton>
         <ElButton type="primary" plain size="small" @click="openReset(userRow(row))">
           {{ $t('page.manage.user.resetPassword') }}
@@ -439,6 +511,15 @@ onMounted(() => {
       width="480px"
       :close-on-click-modal="false"
       :on-submit="handleAdjustSubmit"
+    />
+    <JQDialogForm
+      v-model="durationVisible"
+      :title="$t('page.points.user.durationAdjust')"
+      :form-items="durationFormItems"
+      :initial-data="{ direction: 'increase', days: 1, remark: '' }"
+      width="480px"
+      :close-on-click-modal="false"
+      :on-submit="handleDurationSubmit"
     />
   </JQCustomPage>
 </template>
