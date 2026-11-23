@@ -5,7 +5,6 @@ import PhotoDurationCards from './PhotoDurationCards.vue';
 import type { FormItem } from '@/components';
 import { JQCustomPage, JQDataTable, JQDialogForm, JQSearch } from '@/components';
 import {
-  downloadRechargeCardsExport,
   fetchAdminUserList,
   fetchGenerateRechargeCards,
   fetchRechargeCardShopConfig,
@@ -21,8 +20,8 @@ defineOptions({ name: 'PointsRechargeCards' });
 
 const activeTab = ref('points');
 const loading = ref(false);
-const exporting = ref(false);
 const rows = ref<Api.Recharge.Card[]>([]);
+const selectedRows = ref<Api.Recharge.Card[]>([]);
 const formVisible = ref(false);
 const shopConfigVisible = ref(false);
 const shopUrlInput = ref('');
@@ -162,6 +161,7 @@ async function loadList() {
   loading.value = false;
   if (error || !data) return;
   rows.value = data.items;
+  selectedRows.value = [];
   pagination.total = data.total;
 }
 
@@ -189,15 +189,23 @@ async function onGenerateSubmit(form: Record<string, unknown>) {
   await loadList();
 }
 
-async function onExport() {
-  exporting.value = true;
-  try {
-    await downloadRechargeCardsExport(buildListParams());
-  } catch {
-    ElMessage.error($t('page.points.rechargeCards.exportFailed'));
-  } finally {
-    exporting.value = false;
+function onSelectionChange(selection: Api.Recharge.Card[]) {
+  selectedRows.value = selection;
+}
+
+function onExport() {
+  const selectedIds = new Set(selectedRows.value.map(row => row.id));
+  const codes = rows.value.filter(row => selectedIds.has(row.id)).map(row => row.code);
+  if (!codes.length) {
+    ElMessage.warning($t('page.points.rechargeCards.exportSelectHint'));
+    return;
   }
+  const url = URL.createObjectURL(new Blob([codes.join('\r\n')], { type: 'text/plain;charset=utf-8' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'recharge-cards.txt';
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function statusLabel(status: Api.Recharge.CardStatus) {
@@ -240,102 +248,148 @@ async function saveShopConfig() {
 
 <template>
   <JQCustomPage>
-    <ElTabs v-model="activeTab">
-      <ElTabPane label="积分卡" name="points" />
-      <ElTabPane label="洗图时长卡" name="photo" />
+    <ElTabs v-model="activeTab" type="border-card" class="recharge-card-tabs">
+      <ElTabPane label="积分卡" name="points" class="recharge-card-pane recharge-card-pane--fill">
+        <JQSearch :form-items="searchItems" @search="onSearch" />
+        <JQDataTable
+          :columns="columns"
+          :data="rows"
+          :loading="loading"
+          :pagination="pagination"
+          :module-name="$t('page.points.rechargeCards.title')"
+          class="min-h-0 flex-1"
+          row-key="id"
+          show-selection
+          @selection-change="onSelectionChange"
+          @refresh="loadList"
+          @pagination-change="
+            ({ currentPage, pageSize }) => {
+              pagination.currentPage = currentPage;
+              pagination.pageSize = pageSize;
+              loadList();
+            }
+          "
+        >
+          <template #header-prefix>
+            <ElButton type="primary" @click="formVisible = true">
+              {{ $t('page.points.rechargeCards.generate') }}
+            </ElButton>
+            <ElButton @click="openShopConfig">
+              {{ $t('page.points.rechargeCards.shopConfig') }}
+            </ElButton>
+            <ElButton
+              :disabled="!selectedRows.length"
+              :title="$t('page.points.rechargeCards.exportSelectHint')"
+              @click="onExport"
+            >
+              {{
+                selectedRows.length
+                  ? $t('page.points.rechargeCards.exportSelected', { count: selectedRows.length })
+                  : $t('page.points.rechargeCards.export')
+              }}
+            </ElButton>
+          </template>
+          <template #code="{ row }">
+            <span class="code-cell">{{ row.code }}</span>
+            <ElButton link type="primary" size="small" @click="copyCode(row.code)">
+              {{ $t('page.points.rechargeCards.copy') }}
+            </ElButton>
+          </template>
+          <template #status="{ row }">
+            {{ statusLabel(row.status) }}
+          </template>
+          <template #batchNote="{ row }">
+            {{ row.batchNote || '—' }}
+          </template>
+          <template #redeemedAt="{ row }">
+            {{ row.redeemedAt ? new Date(row.redeemedAt).toLocaleString() : '—' }}
+          </template>
+          <template #redeemedUser="{ row }">
+            <span v-if="row.redeemedUserEmail">
+              {{ row.redeemedUserEmail }}
+              <span v-if="row.redeemedUserUsername" class="muted">({{ row.redeemedUserUsername }})</span>
+            </span>
+            <span v-else>—</span>
+          </template>
+        </JQDataTable>
+
+        <JQDialogForm
+          v-model="formVisible"
+          :title="$t('page.points.rechargeCards.generateTitle')"
+          :form-items="formItems"
+          width="520px"
+          :close-on-click-modal="false"
+          :on-submit="onGenerateSubmit"
+        />
+
+        <ElDialog
+          v-model="shopConfigVisible"
+          :title="$t('page.points.rechargeCards.shopConfigTitle')"
+          width="520px"
+          :close-on-click-modal="false"
+        >
+          <ElForm v-loading="shopConfigLoading" label-width="96px" @submit.prevent="saveShopConfig">
+            <ElFormItem :label="$t('page.points.rechargeCards.shopUrl')">
+              <ElInput
+                v-model="shopUrlInput"
+                :placeholder="$t('page.points.rechargeCards.shopUrlPlaceholder')"
+                maxlength="2048"
+                clearable
+              />
+            </ElFormItem>
+          </ElForm>
+          <template #footer>
+            <ElButton @click="shopConfigVisible = false">{{ $t('common.cancel') }}</ElButton>
+            <ElButton type="primary" :loading="shopConfigSaving" @click="saveShopConfig">
+              {{ $t('common.confirm') }}
+            </ElButton>
+          </template>
+        </ElDialog>
+      </ElTabPane>
+      <ElTabPane label="洗图时长卡" name="photo" class="recharge-card-pane recharge-card-pane--fill" lazy>
+        <PhotoDurationCards />
+      </ElTabPane>
     </ElTabs>
-    <PhotoDurationCards v-if="activeTab === 'photo'" />
-    <template v-else>
-    <JQSearch :form-items="searchItems" @search="onSearch" />
-    <JQDataTable
-      :columns="columns"
-      :data="rows"
-      :loading="loading"
-      :pagination="pagination"
-      :module-name="$t('page.points.rechargeCards.title')"
-      class="min-h-0 flex-1"
-      row-key="id"
-      @refresh="loadList"
-      @pagination-change="
-        ({ currentPage, pageSize }) => {
-          pagination.currentPage = currentPage;
-          pagination.pageSize = pageSize;
-          loadList();
-        }
-      "
-    >
-      <template #header-prefix>
-        <ElButton type="primary" @click="formVisible = true">
-          {{ $t('page.points.rechargeCards.generate') }}
-        </ElButton>
-        <ElButton @click="openShopConfig">
-          {{ $t('page.points.rechargeCards.shopConfig') }}
-        </ElButton>
-        <ElButton :loading="exporting" @click="onExport">
-          {{ $t('page.points.rechargeCards.export') }}
-        </ElButton>
-      </template>
-      <template #code="{ row }">
-        <span class="code-cell">{{ row.code }}</span>
-        <ElButton link type="primary" size="small" @click="copyCode(row.code)">
-          {{ $t('page.points.rechargeCards.copy') }}
-        </ElButton>
-      </template>
-      <template #status="{ row }">
-        {{ statusLabel(row.status) }}
-      </template>
-      <template #batchNote="{ row }">
-        {{ row.batchNote || '—' }}
-      </template>
-      <template #redeemedAt="{ row }">
-        {{ row.redeemedAt ? new Date(row.redeemedAt).toLocaleString() : '—' }}
-      </template>
-      <template #redeemedUser="{ row }">
-        <span v-if="row.redeemedUserEmail">
-          {{ row.redeemedUserEmail }}
-          <span v-if="row.redeemedUserUsername" class="muted">({{ row.redeemedUserUsername }})</span>
-        </span>
-        <span v-else>—</span>
-      </template>
-    </JQDataTable>
-
-    <JQDialogForm
-      v-model="formVisible"
-      :title="$t('page.points.rechargeCards.generateTitle')"
-      :form-items="formItems"
-      width="520px"
-      :close-on-click-modal="false"
-      :on-submit="onGenerateSubmit"
-    />
-
-    <ElDialog
-      v-model="shopConfigVisible"
-      :title="$t('page.points.rechargeCards.shopConfigTitle')"
-      width="520px"
-      :close-on-click-modal="false"
-    >
-      <ElForm v-loading="shopConfigLoading" label-width="96px" @submit.prevent="saveShopConfig">
-        <ElFormItem :label="$t('page.points.rechargeCards.shopUrl')">
-          <ElInput
-            v-model="shopUrlInput"
-            :placeholder="$t('page.points.rechargeCards.shopUrlPlaceholder')"
-            maxlength="2048"
-            clearable
-          />
-        </ElFormItem>
-      </ElForm>
-      <template #footer>
-        <ElButton @click="shopConfigVisible = false">{{ $t('common.cancel') }}</ElButton>
-        <ElButton type="primary" :loading="shopConfigSaving" @click="saveShopConfig">
-          {{ $t('common.confirm') }}
-        </ElButton>
-      </template>
-    </ElDialog>
-    </template>
   </JQCustomPage>
 </template>
 
 <style scoped>
+.recharge-card-tabs {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.recharge-card-tabs :deep(.el-tabs__header) {
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.recharge-card-tabs :deep(.el-tabs__content) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.recharge-card-tabs :deep(.el-tab-pane) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  overflow: auto;
+}
+
+.recharge-card-tabs :deep(.recharge-card-pane--fill) {
+  overflow: hidden;
+}
+
 .code-cell {
   font-family: ui-monospace, monospace;
   margin-right: 8px;

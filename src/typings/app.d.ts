@@ -938,7 +938,9 @@ declare namespace App {
             generatePoints: string;
             generateSuccess: string;
             export: string;
+            exportSelected: string;
             exportFailed: string;
+            exportSelectHint: string;
             code: string;
             codeKeywordPlaceholder: string;
             points: string;
