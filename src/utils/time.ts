@@ -10,6 +10,14 @@ export function getCurrentMonthDatetimeRange(): [string, string] {
   return [start, end];
 }
 
+/** 含今天在内的最近 N 个上海自然日，起 00:00:00.000，止今天 23:59:59.999 */
+export function getShanghaiRecentDaysRange(days: number): [string, string] {
+  const count = Math.max(1, Math.floor(days));
+  const start = dayjs.tz().startOf('day').subtract(count - 1, 'day');
+  const end = dayjs.tz().endOf('day');
+  return [start.format(ADMIN_DATETIMERANGE_VALUE_FORMAT), end.format(ADMIN_DATETIMERANGE_VALUE_FORMAT)];
+}
+
 export function parseSearchTimeRange(value: unknown): { from?: string; to?: string } {
   if (!Array.isArray(value) || value.length < 2) {
     return {};

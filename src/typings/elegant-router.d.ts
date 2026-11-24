@@ -48,6 +48,7 @@ declare module "@elegant-router/types" {
     "points_recharge_records": "/points/recharge/records";
     "points_records": "/points/records";
     "points_settings": "/points/settings";
+    "points_stats": "/points/stats";
     "proxy-models": "/proxy-models";
     "user": "/user";
     "user_list": "/user/list";
@@ -141,6 +142,7 @@ declare module "@elegant-router/types" {
     | "points_recharge_records"
     | "points_records"
     | "points_settings"
+    | "points_stats"
     | "proxy-models"
     | "user_list"
     | "user_role"

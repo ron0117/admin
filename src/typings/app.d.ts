@@ -865,6 +865,7 @@ declare namespace App {
           records: {
             title: string;
             user: string;
+            role: string;
             userPlaceholder: string;
             type: string;
             feature: string;
@@ -887,6 +888,35 @@ declare namespace App {
             copyId: string;
             copySuccess: string;
             copyFailed: string;
+          };
+          stats: {
+            title: string;
+            preset: string;
+            last7: string;
+            last30: string;
+            last90: string;
+            all: string;
+            custom: string;
+            byUser: string;
+            byRole: string;
+            byFeature: string;
+            last30Hint: string;
+            roleHint: string;
+            empty: string;
+            loadFailed: string;
+            rangeInvalid: string;
+            email: string;
+            roles: string;
+            unassigned: string;
+            netPoints: string;
+            consumeCount: string;
+            userCount: string;
+            statusActive: string;
+            statusDisabled: string;
+            feature: string;
+            share: string;
+            keyword: string;
+            dash: string;
           };
           menu: {
             inspire: string;

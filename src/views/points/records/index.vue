@@ -101,6 +101,7 @@ const searchItems = computed<FormItem[]>(() => [
 const columns = computed(() => [
   { prop: 'createdAt', label: $t('page.points.records.time'), minWidth: 170, formatTime: true },
   { prop: 'user', label: $t('page.points.records.user'), minWidth: 200, slot: 'user' },
+  { prop: 'roles', label: $t('page.points.records.role'), minWidth: 140, slot: 'roles' },
   { prop: 'type', label: $t('page.points.records.type'), minWidth: 110, slot: 'type' },
   { prop: 'feature', label: $t('page.points.records.featureSpec'), minWidth: 160, slot: 'feature' },
   { prop: 'quantity', label: $t('page.points.records.quantity'), minWidth: 80, slot: 'quantity' },
@@ -169,6 +170,8 @@ const amountClass = (row: Api.Points.Ledger) =>
   row.type === 'consume' || row.type === 'admin_decrease' ? 'text-red-500' : 'text-green-600';
 
 const userText = (row: Api.Points.Ledger) => (row.username ? `${row.email}（${row.username}）` : row.email);
+
+const rolesText = (row: Api.Points.Ledger) => (row.roles ?? []).join('、') || '—';
 
 const loadList = async () => {
   loading.value = true;
@@ -242,6 +245,9 @@ const copyRequestId = async (id: string) => {
     >
       <template #user="{ row }">
         {{ userText(ledgerRow(row)) }}
+      </template>
+      <template #roles="{ row }">
+        {{ rolesText(ledgerRow(row)) }}
       </template>
       <template #type="{ row }">
         <ElTag :type="typeTag(ledgerRow(row).type)" size="small">

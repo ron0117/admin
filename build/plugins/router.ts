@@ -61,7 +61,8 @@ export function setupElegantRouter() {
         manage_admin: { icon: 'mdi:account-tie-outline', order: 1 },
         user: { icon: 'mdi:account-group-outline', order: 3 },
         user_list: { icon: 'mdi:account-outline', order: 1 },
-        user_role: { icon: 'mdi:account-key-outline', order: 2 }
+        user_role: { icon: 'mdi:account-key-outline', order: 2 },
+        points_stats: { icon: 'mdi:chart-bar', order: 3 }
       };
 
       Object.assign(meta, extras[key]);

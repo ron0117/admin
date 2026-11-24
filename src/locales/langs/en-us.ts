@@ -310,6 +310,7 @@ const local: App.I18n.Schema = {
     points: 'Points',
     points_settings: 'Feature Settings',
     points_records: 'Point Ledger',
+    points_stats: 'Point Stats',
     points_recharge: 'Recharge',
     points_recharge_cards: 'Card codes',
     points_recharge_packages: 'Recharge tiers',

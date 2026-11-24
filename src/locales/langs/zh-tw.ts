@@ -310,6 +310,7 @@ const local: App.I18n.Schema = {
     points: '積分管理',
     points_settings: '功能設定',
     points_records: '積分流水',
+    points_stats: '積分統計',
     points_recharge: '充值',
     points_recharge_cards: '卡密管理',
     points_recharge_packages: '充值管理',

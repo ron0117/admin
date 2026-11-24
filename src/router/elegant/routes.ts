@@ -193,6 +193,17 @@ export const generatedRoutes: GeneratedRoute[] = [
           icon: 'mdi:tune-variant',
           order: 1
         }
+      },
+      {
+        name: 'points_stats',
+        path: '/points/stats',
+        component: 'view.points_stats',
+        meta: {
+          title: 'points_stats',
+          i18nKey: 'route.points_stats',
+          icon: 'mdi:chart-bar',
+          order: 3
+        }
       }
     ]
   },

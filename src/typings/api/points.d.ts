@@ -44,6 +44,7 @@ declare namespace Api {
       remark: string | null;
       email: string;
       username: string | null;
+      roles: string[];
     }
 
     interface LedgerListQuery {
@@ -74,6 +75,62 @@ declare namespace Api {
 
     interface AdjustResp {
       points: number;
+    }
+
+    interface StatsQuery {
+      from?: string;
+      to?: string;
+    }
+
+    interface StatsUser {
+      userId: string;
+      username: string | null;
+      email: string;
+      displayName: string;
+      roles: string[];
+      netPoints: number;
+      consumeCount: number;
+    }
+
+    interface StatsRole {
+      roleId: string | null;
+      name: string;
+      unassigned: boolean;
+      status: 'active' | 'disabled' | null;
+      netPoints: number;
+      consumeCount: number;
+      userCount: number;
+    }
+
+    interface StatsFeature {
+      menuCode: string;
+      name: string;
+      known: boolean;
+      sort: number;
+      netPoints: number;
+      consumeCount: number;
+    }
+
+    interface StatsResp {
+      total: number;
+      from: string | null;
+      to: string | null;
+      byUser: StatsUser[];
+      byRole: StatsRole[];
+      byFeature: StatsFeature[];
+    }
+
+    interface StatsUsersQuery extends StatsQuery {
+      keyword?: string;
+      page?: number;
+      pageSize?: number;
+    }
+
+    interface StatsUsersResp {
+      items: StatsUser[];
+      total: number;
+      page: number;
+      pageSize: number;
     }
   }
 }

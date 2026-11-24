@@ -15,6 +15,22 @@ export function fetchPatchPointFeature(menuCode: string, data: Api.Points.PatchF
   });
 }
 
+export function fetchPointStats(params: Api.Points.StatsQuery) {
+  return nestRequest<Api.Points.StatsResp>({
+    url: '/admin/points/stats',
+    method: 'get',
+    params
+  });
+}
+
+export function fetchPointStatsUsers(params: Api.Points.StatsUsersQuery) {
+  return nestRequest<Api.Points.StatsUsersResp>({
+    url: '/admin/points/stats/users',
+    method: 'get',
+    params
+  });
+}
+
 export function fetchPointLedgers(params: Api.Points.LedgerListQuery) {
   return nestRequest<Api.Points.LedgerListResp>({
     url: '/admin/point-ledgers',
