@@ -183,6 +183,7 @@ const routeMap: RouteMap = {
   "ai-config": "/ai-config",
   "demo": "/demo",
   "home": "/home",
+  "ip-blocklist": "/ip-blocklist",
   "login": "/login/:module(pwd-login)?",
   "logs": "/logs",
   "manage": "/manage",
@@ -196,6 +197,7 @@ const routeMap: RouteMap = {
   "points_settings": "/points/settings",
   "points_stats": "/points/stats",
   "proxy-models": "/proxy-models",
+  "upstream-risk": "/upstream-risk",
   "user": "/user",
   "user_list": "/user/list",
   "user_role": "/user/role"

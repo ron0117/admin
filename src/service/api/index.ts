@@ -4,6 +4,8 @@ export * from './admin-users';
 export * from './roles';
 export * from './points';
 export * from './logs';
+export * from './ip-blocklist';
+export * from './upstream-risk';
 export * from './recharge';
 export * from './route';
 export * from './upload';

@@ -295,6 +295,8 @@ const local: App.I18n.Schema = {
   route: {
     'ai-config': 'Model Services',
     'proxy-models': 'Current Models',
+    'ip-blocklist': 'IP Blocklist',
+    'upstream-risk': 'Upstream Risk',
     logs: 'Logs',
     login: 'Login',
     403: 'No Permission',

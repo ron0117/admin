@@ -74,6 +74,17 @@ export const generatedRoutes: GeneratedRoute[] = [
     }
   },
   {
+    name: 'ip-blocklist',
+    path: '/ip-blocklist',
+    component: 'layout.base$view.ip-blocklist',
+    meta: {
+      title: 'ip-blocklist',
+      i18nKey: 'route.ip-blocklist',
+      icon: 'mdi:shield-lock-outline',
+      order: 8
+    }
+  },
+  {
     name: 'login',
     path: '/login/:module(pwd-login)?',
     component: 'layout.blank$view.login',
@@ -216,6 +227,17 @@ export const generatedRoutes: GeneratedRoute[] = [
       i18nKey: 'route.proxy-models',
       icon: 'mdi:robot-outline',
       order: 6
+    }
+  },
+  {
+    name: 'upstream-risk',
+    path: '/upstream-risk',
+    component: 'layout.base$view.upstream-risk',
+    meta: {
+      title: 'upstream-risk',
+      i18nKey: 'route.upstream-risk',
+      icon: 'mdi:chart-timeline-variant-shimmer',
+      order: 9
     }
   },
   {

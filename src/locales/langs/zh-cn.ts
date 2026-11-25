@@ -295,6 +295,8 @@ const local: App.I18n.Schema = {
   route: {
     'ai-config': '模型服务',
     'proxy-models': '当前模型',
+    'ip-blocklist': 'IP 黑名单',
+    'upstream-risk': '上游风控',
     logs: '日志管理',
     login: '登录',
     403: '无权限',

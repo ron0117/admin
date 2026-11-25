@@ -22,6 +22,7 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   "ai-config": () => import("@/views/ai-config/index.vue"),
   demo: () => import("@/views/demo/index.vue"),
   home: () => import("@/views/home/index.vue"),
+  "ip-blocklist": () => import("@/views/ip-blocklist/index.vue"),
   logs: () => import("@/views/logs/index.vue"),
   manage_admin: () => import("@/views/manage/admin/index.vue"),
   points_recharge_cards: () => import("@/views/points/recharge/cards/index.vue"),
@@ -31,6 +32,7 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   points_settings: () => import("@/views/points/settings/index.vue"),
   points_stats: () => import("@/views/points/stats/index.vue"),
   "proxy-models": () => import("@/views/proxy-models/index.vue"),
+  "upstream-risk": () => import("@/views/upstream-risk/index.vue"),
   user_list: () => import("@/views/user/list/index.vue"),
   user_role: () => import("@/views/user/role/index.vue"),
 };

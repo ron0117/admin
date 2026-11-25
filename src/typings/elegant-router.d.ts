@@ -37,6 +37,7 @@ declare module "@elegant-router/types" {
     "ai-config": "/ai-config";
     "demo": "/demo";
     "home": "/home";
+    "ip-blocklist": "/ip-blocklist";
     "login": "/login/:module(pwd-login)?";
     "logs": "/logs";
     "manage": "/manage";
@@ -50,6 +51,7 @@ declare module "@elegant-router/types" {
     "points_settings": "/points/settings";
     "points_stats": "/points/stats";
     "proxy-models": "/proxy-models";
+    "upstream-risk": "/upstream-risk";
     "user": "/user";
     "user_list": "/user/list";
     "user_role": "/user/role";
@@ -104,11 +106,13 @@ declare module "@elegant-router/types" {
     | "ai-config"
     | "demo"
     | "home"
+    | "ip-blocklist"
     | "login"
     | "logs"
     | "manage"
     | "points"
     | "proxy-models"
+    | "upstream-risk"
     | "user"
   >;
 
@@ -135,6 +139,7 @@ declare module "@elegant-router/types" {
     | "ai-config"
     | "demo"
     | "home"
+    | "ip-blocklist"
     | "logs"
     | "manage_admin"
     | "points_recharge_cards"
@@ -144,6 +149,7 @@ declare module "@elegant-router/types" {
     | "points_settings"
     | "points_stats"
     | "proxy-models"
+    | "upstream-risk"
     | "user_list"
     | "user_role"
   >;
